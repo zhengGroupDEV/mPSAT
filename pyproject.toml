@@ -8,8 +8,12 @@ authors = ["rainyl <rainyliusy3@gmail.com>"]
 python = ">=3.9,<3.11"
 PySide6 = "^6.3.1"
 matplotlib = "^3.5.2"
+coloredlogs = "^15.0.1"
+pyqtgraph = "^0.12.4"
+scipy = "^1.9.0"
 
 [tool.poetry.dev-dependencies]
+black = "^22.6.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
