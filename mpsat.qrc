@@ -2,4 +2,8 @@
   <qresource prefix="markdown">
     <file>README.md</file>
   </qresource>
+  <qresource prefix="icons"/>
+  <qresource prefix="json">
+    <file>data/label_name.json</file>
+  </qresource>
 </RCC>

@@ -36,12 +36,14 @@ class MPlotWidget(pg.PlotWidget):
         self.plotItem.clearPlots()
         self.plotItem.plot()
 
-    def update_pre_plot(
+    def update_plot(
         self,
         x: np.ndarray,
         y: np.ndarray,
-        x1: np.ndarray,
-        y1: np.ndarray,
+        x1: np.ndarray = None,
+        y1: np.ndarray = None,
+        name1: str = "Original",
+        name2: str = "Processed",
     ):
         # logger.debug(f"{x}, {y}, {x1}, {y1}")
         self.setTitle("mPSAT-Preprocess")
@@ -49,8 +51,9 @@ class MPlotWidget(pg.PlotWidget):
         pen1 = pg.mkPen(color=self.colors[0], width=3)
         pen2 = pg.mkPen(color=self.colors[1], width=3)
         self.plotItem.clearPlots()
-        self.plotItem.plot(x=x, y=y, pen=pen1, name="Original")
-        self.plotItem.plot(x=x1, y=y1, pen=pen2, name="Processed")
+        self.plotItem.plot(x=x, y=y, pen=pen1, name=name1)
+        if not (x1 is None and y1 is None):
+            self.plotItem.plot(x=x1, y=y1, pen=pen2, name=name2)
 
         self.plotItem.showGrid(x=True, y=True, alpha=0.3)
         self.plotItem.setXRange(min=min(x), max=max(x))
@@ -58,7 +61,7 @@ class MPlotWidget(pg.PlotWidget):
         self.plotItem.setLimits(xMin=0, xMax=6000, yMin=-1, yMax=1.1)
         self.plotItem.invertX()
         self.plotItem.setLabel("left", "Intensity")
-        self.plotItem.setLabel("bottom", "Wavenumber (cm-1)")
+        self.plotItem.setLabel("bottom", "Wavenumber (cm<sup>-1</sup>)")
         axBottom = self.plotItem.getAxis("bottom")
         axBottom.setTickSpacing(500, 25)
         axBottom = self.plotItem.getAxis("left")

@@ -1,7 +1,7 @@
 '''
 Description: enum
 Author: Rainyl
-LastEditTime: 2022-07-31 20:03:56
+LastEditTime: 2022-08-01 20:03:59
 '''
 from enum import Enum
 class RT(Enum):
@@ -11,23 +11,13 @@ class RT(Enum):
     MAX_SPEC_NUM = 3
     SPEC_DATA = 4
     CRT_IDX = 5
-
-
-class PP(Enum):
-    SMOOTH = 0
-    BASELINE = 1
-    MIN = 2
-    MAX = 3
-    ADJ_NEG = 4
-
-class MC(Enum):
-    ...
+    CNN_PATH = 6
+    RF_PATH = 7
+    LSVM_PATH = 8
 
 class PLOT(Enum):
     X = 0
     Y = 1
-    PRE_DATA = 2
-    MC_DATA = 3
 
 class SPEC(Enum):
     X_ORI = 0
@@ -39,3 +29,7 @@ class SPEC(Enum):
     X_PP = 4
     Y_PP = 5
     
+class BTN(Enum):
+    CNN = 1
+    RF = 2
+    LSVM = 3

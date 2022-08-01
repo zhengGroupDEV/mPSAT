@@ -69,7 +69,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tabWelcome">
        <attribute name="title">
@@ -150,6 +150,9 @@
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
+              <property name="handleWidth">
+               <number>3</number>
+              </property>
               <widget class="QSplitter" name="splitter_2">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -165,6 +168,9 @@
                </property>
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="handleWidth">
+                <number>3</number>
                </property>
                <widget class="QWidget" name="verticalLayoutWidget_2">
                 <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -346,54 +352,10 @@
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="1">
-                       <widget class="QLineEdit" name="ledit_pre_min">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>60</width>
-                          <height>16777215</height>
-                         </size>
-                        </property>
-                        <property name="inputMask">
-                         <string/>
-                        </property>
-                        <property name="text">
-                         <string>0</string>
-                        </property>
-                       </widget>
-                      </item>
                       <item row="0" column="4">
                        <widget class="QLabel" name="label_13">
                         <property name="text">
                          <string>Smooth:</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="1" column="1">
-                       <widget class="QLineEdit" name="ledit_pre_max">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>60</width>
-                          <height>16777215</height>
-                         </size>
-                        </property>
-                        <property name="inputMask">
-                         <string/>
-                        </property>
-                        <property name="text">
-                         <string>6000</string>
                         </property>
                        </widget>
                       </item>
@@ -429,13 +391,45 @@
                       <item row="1" column="7">
                        <widget class="QPushButton" name="btn_pre_save">
                         <property name="sizePolicy">
-                         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
                         </property>
                         <property name="text">
                          <string>Save Spectrum</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QSpinBox" name="spbox_pre_min">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="maximum">
+                         <number>6000</number>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QSpinBox" name="spbox_pre_max">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="prefix">
+                         <string/>
+                        </property>
+                        <property name="maximum">
+                         <number>6000</number>
+                        </property>
+                        <property name="value">
+                         <number>6000</number>
                         </property>
                        </widget>
                       </item>
@@ -460,8 +454,23 @@
                 </layout>
                </widget>
                <widget class="QGroupBox" name="groupBox_3">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>10</width>
+                  <height>50</height>
+                 </size>
+                </property>
                 <property name="title">
                  <string>Selected Files</string>
+                </property>
+                <property name="flat">
+                 <bool>false</bool>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_5">
                  <property name="leftMargin">
@@ -480,6 +489,18 @@
                   <layout class="QVBoxLayout" name="verticalLayout">
                    <item>
                     <widget class="QListWidget" name="listw_pre_files">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>10</width>
+                       <height>50</height>
+                      </size>
+                     </property>
                      <property name="sortingEnabled">
                       <bool>true</bool>
                      </property>
@@ -510,7 +531,7 @@
                      <item>
                       <widget class="QPushButton" name="btn_select_file_dir">
                        <property name="sizePolicy">
-                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                          <horstretch>0</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
@@ -584,17 +605,44 @@
                 <item>
                  <widget class="QCheckBox" name="ckbox_h2o">
                   <property name="text">
-                   <string>H2O</string>
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_3">
+                  <property name="text">
+                   <string>H&lt;sub&gt;2&lt;/sub&gt;O</string>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QCheckBox" name="ckbox_co2">
                   <property name="text">
-                   <string>CO2</string>
+                   <string/>
                   </property>
                   <property name="tristate">
                    <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_4">
+                  <property name="text">
+                   <string>CO&lt;sub&gt;2&lt;/sub&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QDoubleSpinBox" name="dspbox_co2">
+                  <property name="maximum">
+                   <double>1.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.010000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>0.200000000000000</double>
                   </property>
                  </widget>
                 </item>
@@ -716,23 +764,33 @@
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
                   </property>
+                  <property name="handleWidth">
+                   <number>3</number>
+                  </property>
                   <widget class="QWidget" name="verticalLayoutWidget_3">
                    <layout class="QVBoxLayout" name="verticalLayout_8">
                     <item>
-                     <widget class="MPlotWidget" name="fig_spec_match"/>
+                     <widget class="MPlotWidget" name="fig_spec_match">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                        <horstretch>6</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                     </widget>
                     </item>
                    </layout>
                   </widget>
                   <widget class="QTableWidget" name="table_match_res">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                      <horstretch>1</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>0</width>
+                     <width>100</width>
                      <height>0</height>
                     </size>
                    </property>
@@ -759,17 +817,12 @@
                    </attribute>
                    <column>
                     <property name="text">
-                     <string>NO.</string>
+                     <string>Type</string>
                     </property>
                    </column>
                    <column>
                     <property name="text">
-                     <string>Name</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>r</string>
+                     <string>P(%)</string>
                     </property>
                    </column>
                   </widget>
@@ -785,7 +838,7 @@
            <attribute name="title">
             <string>Settings</string>
            </attribute>
-           <layout class="QGridLayout" name="gridLayout_17">
+           <layout class="QGridLayout" name="gridLayout_10">
             <item row="0" column="0">
              <widget class="QGroupBox" name="groupBox_6">
               <property name="sizePolicy">
@@ -813,33 +866,10 @@
                </item>
                <item row="0" column="0">
                 <layout class="QGridLayout" name="gridLayout_15">
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="label_30">
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label">
                    <property name="text">
-                    <string>CNN Path:</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QLineEdit" name="ledit_spec_set_model_rf"/>
-                 </item>
-                 <item row="3" column="1">
-                  <widget class="QLineEdit" name="ledit_spec_set_model_lsvm"/>
-                 </item>
-                 <item row="1" column="2">
-                  <widget class="QPushButton" name="btn_spec_set_rf">
-                   <property name="text">
-                    <string>Browse</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="0">
-                  <widget class="QLabel" name="label_31">
-                   <property name="text">
-                    <string>LSVM Path:</string>
+                    <string>RF Path:</string>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignCenter</set>
@@ -853,16 +883,6 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="label">
-                   <property name="text">
-                    <string>RF Path:</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="0" column="2">
                   <widget class="QPushButton" name="btn_spec_set_cnn">
                    <property name="text">
@@ -870,8 +890,85 @@
                    </property>
                   </widget>
                  </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_30">
+                   <property name="text">
+                    <string>CNN Path:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="0" column="1">
-                  <widget class="QLineEdit" name="ledit_spec_set_model_cnn"/>
+                  <widget class="QLineEdit" name="ledit_spec_set_model_cnn">
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                   <property name="placeholderText">
+                    <string>CNN model path</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_31">
+                   <property name="text">
+                    <string>LSVM Path:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QPushButton" name="btn_spec_set_rf">
+                   <property name="text">
+                    <string>Browse</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QLineEdit" name="ledit_spec_set_model_rf">
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                   <property name="placeholderText">
+                    <string>Random Forest path</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QLineEdit" name="ledit_spec_set_model_lsvm">
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                   <property name="placeholderText">
+                    <string>Linear SVM path</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QLabel" name="label_2">
+                   <property name="text">
+                    <string>Top-n:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="1">
+                  <widget class="QSpinBox" name="spbox_spec_topn">
+                   <property name="minimum">
+                    <number>1</number>
+                   </property>
+                   <property name="maximum">
+                    <number>120</number>
+                   </property>
+                   <property name="value">
+                    <number>10</number>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>

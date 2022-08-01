@@ -3,22 +3,29 @@ Description: main logic app
 Author: Rainyl
 LastEditTime: 2022-07-30 17:21:53
 """
+import os
 import numpy as np
 import pyqtgraph as pg
-from typing import Dict, List, Union
-from PySide6.QtCore import QSettings, Qt
+from typing import Dict, List, Tuple, Union
+from PySide6.QtCore import Qt, QFile, QIODeviceBase
 from PySide6.QtWidgets import (
     QMainWindow,
     QButtonGroup,
     QAbstractButton,
     QFileDialog,
-    QListWidgetItem,
     QMessageBox,
+    QTableWidgetItem,
+    QStatusBar,
 )
+
 from src.spectroscopy import Spectrum
-from src.enum import RT, PP, MC, PLOT
+from src.enum import RT, PLOT, BTN
 from src.mpsatUI import Ui_MainWindow
 from src.logger import MPSATLogger
+from src.infer_base import MpInferenceBase
+from src.infer_nn import MpInferenceNNONNX
+from src.infer_skl import MpInferenceSKL
+from src.msettings import DefaultSettings, mpsat_settings, save_config
 
 
 class mPSAT(QMainWindow, Ui_MainWindow):
@@ -29,32 +36,18 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         RT.SPEC_TYPE: "FTIR",
         RT.MAX_SPEC_NUM: 100,
     }
-    param_preprocess: Dict[PP, Union[int, bool]] = {
-        PP.MIN: 0,
-        PP.MAX: 6000,
-        PP.SMOOTH: 3,
-        PP.BASELINE: 8,
-        PP.ADJ_NEG: False,
-    }
-    param_match = {}
-    param_plot: Dict[PLOT, Union[list, int, Dict[PLOT, np.ndarray]]] = {
-        PLOT.PRE_DATA: {
-            PLOT.X: np.array([]),
-            PLOT.Y: np.array([]),
-        },
-        PLOT.MC_DATA: {
-            PLOT.X: np.array([]),
-            PLOT.Y: np.array([]),
-        },
-    }
+
     logger = MPSATLogger("main")
     spectrum = Spectrum()
+    inferer: MpInferenceBase
 
     def __init__(self) -> None:
         pg.setConfigOption("background", "w")
         pg.setConfigOption("foreground", "k")
         super(mPSAT, self).__init__()
-        self.settings = QSettings("zhengGroup", "mpsat")
+        # self.settings = QSettings("zhengGroup", "mpsat")
+        self.settings = mpsat_settings
+        self.dft_set = DefaultSettings()
         self.setupUi(self)
         self.set_signals()
         self.restore_settings()
@@ -67,31 +60,76 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         self.listw_pre_files.currentRowChanged.connect(
             self.on_pre_listw_current_row_changed
         )
-        # self.btn_stop_pre.clicked.connect(self.btn_stop_pre_clicked)
         self.slider_pre_smooth.valueChanged.connect(self.slider_presmooth_changed)
         self.slider_pre_baseline.valueChanged.connect(self.slider_prebaseline_changed)
-        self.ledit_pre_min.editingFinished.connect(self.ledit_pre_min_finished)
-        self.ledit_pre_max.editingFinished.connect(self.ledit_pre_max_finished)
+        self.spbox_pre_min.valueChanged.connect(self.pre_min_finished)
+        self.spbox_pre_max.valueChanged.connect(self.pre_max_finished)
         self.ckbox_adjneg.stateChanged.connect(self.ckbox_adjneg_changed)
         self.btn_pre_save.clicked.connect(self.btn_save_pre_spec_clicked)
         # spec/match
         self.btn_spec_match_prev.clicked.connect(self.btn_match_prev_clicked)
         self.btn_spec_match_next.clicked.connect(self.btn_match_next_clicked)
-        self.ckbox_co2.stateChanged.connect(self.ckbox_rm_co2_h2o)
+        self.ckbox_co2.stateChanged.connect(self.ckbox_rm_co2)
+        self.ckbox_h2o.stateChanged.connect(self.ckbox_rm_h2o)
+        self.dspbox_co2.valueChanged.connect(self.dspbox_co2_changed)
         self.cbox_match_analyze.currentIndexChanged.connect(self.cmbox_analyze_changed)
         self.cbox_match_method.currentIndexChanged.connect(self.cmbox_method_changed)
         self.btn_match_go.clicked.connect(self.btn_match_clicked)
+        self.spbox_spec_topn.valueChanged.connect(self.topn_finished)
 
         self.btngrp_spec_set_browse = QButtonGroup(self)
-        self.btngrp_spec_set_browse.addButton(self.btn_spec_set_cnn)
-        self.btngrp_spec_set_browse.addButton(self.btn_spec_set_lsvm)
-        self.btngrp_spec_set_browse.addButton(self.btn_spec_set_rf)
+        self.btngrp_spec_set_browse.addButton(self.btn_spec_set_cnn, id=BTN.CNN.value)
+        self.btngrp_spec_set_browse.addButton(self.btn_spec_set_rf, id=BTN.RF.value)
+        self.btngrp_spec_set_browse.addButton(self.btn_spec_set_lsvm, id=BTN.LSVM.value)
         self.btngrp_spec_set_browse.buttonClicked.connect(
             self.spec_set_browse_btn_clicked
         )
 
     def restore_settings(self):
-        ...
+        self.spbox_pre_min.setValue(self.settings.get("rmin", self.dft_set.rmin))
+        self.spbox_pre_max.setValue(self.settings.get("rmax", self.dft_set.rmax))
+        self.slider_pre_smooth.setValue(
+            self.settings.get("smooth", self.dft_set.smooth)
+        )
+        self.slider_pre_baseline.setValue(
+            self.settings.get("baseline", self.dft_set.baseline)
+        )
+        self.ckbox_adjneg.setChecked(self.settings.get("adjneg", self.dft_set.adjneg))
+
+        self.ckbox_h2o.setChecked(self.settings.get("h2o", self.dft_set.h2o))
+        self.ckbox_co2.setChecked(self.settings.get("co2", self.dft_set.co2))
+        self.cbox_match_analyze.setCurrentIndex(
+            self.settings.get("analyze", self.dft_set.analyze)
+        )
+        self.cbox_match_method.setCurrentIndex(
+            self.settings.get("method", self.dft_set.method)
+        )
+
+        self.ledit_spec_set_model_cnn.setText(
+            self.settings.get("cnn", self.dft_set.cnn)
+        )
+        self.ledit_spec_set_model_rf.setText(self.settings.get("rf", self.dft_set.rf))
+        self.ledit_spec_set_model_lsvm.setText(
+            self.settings.get("lsvm", self.dft_set.lsvm)
+        )
+        self.spbox_spec_topn.setValue(self.settings.get("topn", self.dft_set.topn))
+
+        self.cboxSetLoglevel.setCurrentIndex(
+            self.settings.get("loglv", self.dft_set.loglv)
+        )
+        lang = self.settings.get("lang", self.dft_set.lang)
+        lang = self.dft_set.LANGS.get(lang, 0)
+        self.cboxSetLang.setCurrentIndex(lang)
+
+        self.splitter.setStretchFactor(0, 8)  # match, fig & table
+        self.splitter.setStretchFactor(1, 1)
+        self.splitter_3.setStretchFactor(0, 1)
+        self.splitter_3.setStretchFactor(1, 6)
+
+        self.table_match_res.setColumnWidth(0, 100)
+        self.table_match_res.setColumnWidth(1, 10)
+
+        self.update_model()
 
     def btn_pop_pre_files_clicked(self):
         cur_row = self.listw_pre_files.currentRow()
@@ -156,39 +194,44 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         self.listw_pre_files.clear()
         self.listw_pre_files.addItems(self.param_runtime[RT.SELECTED_FILES])
 
-    def btn_stop_pre_clicked(self):
-        ...
-
     def ckbox_adjneg_changed(self, state: int):
         if state == Qt.CheckState.Checked:
-            self.param_preprocess[PP.ADJ_NEG] = True
+            self.settings.adjneg = True
         elif state == Qt.CheckState.Unchecked:
-            self.param_preprocess[PP.ADJ_NEG] = False
+            self.settings.adjneg = False
         else:
             self.logger.warning(f"checkbox adjneg stat is 1")
         self.update_pre_plot()
 
     def slider_presmooth_changed(self, val: int):
-        self.param_preprocess[PP.SMOOTH] = val
+        self.settings.smooth = val
         self.label_pre_smooth.setText(f"{val}")
         self.update_pre_plot()
+        save_config(self.settings)
 
     def slider_prebaseline_changed(self, val: int):
-        self.param_preprocess[PP.BASELINE] = val
+        self.settings.baseline = val
         self.label_pre_baseline.setText(f"{val}")
         self.update_pre_plot()
+        save_config(self.settings)
 
-    def ledit_pre_min_finished(self):
-        ledit_min = self.ledit_pre_min.text()
-        if len(ledit_min) != 0:
-            self.param_preprocess[PP.MIN] = int(ledit_min)
-            self.update_pre_plot()
+    def pre_min_finished(self):
+        ledit_min = self.spbox_pre_min.value()
+        if ledit_min > self.settings.rmax:
+            self.show_warning_msg(f"invalid min wavenumber!")
+            return
+        self.settings.rmin = ledit_min
+        self.update_pre_plot()
+        save_config(self.settings)
 
-    def ledit_pre_max_finished(self):
-        ledit_max = self.ledit_pre_max.text()
-        if len(ledit_max) != 0:
-            self.param_preprocess[PP.MAX] = int(ledit_max)
-            self.update_pre_plot()
+    def pre_max_finished(self):
+        ledit_max = self.spbox_pre_max.value()
+        if ledit_max < self.settings.rmin:
+            self.show_warning_msg(f"invalid max wavenumber!")
+            return
+        self.settings.rmax = ledit_max
+        self.update_pre_plot()
+        save_config(self.settings)
 
     def btn_save_pre_spec_clicked(self):
         if len(self.spectrum.x) == 0:
@@ -213,25 +256,154 @@ class mPSAT(QMainWindow, Ui_MainWindow):
             )
 
     def btn_match_prev_clicked(self):
-        ...
+        cur_row = self.param_runtime[RT.CRT_IDX]
+        if cur_row - 1 < 0:
+            return
+        cur_row = max(cur_row - 1, 0)
+        self.param_runtime[RT.CRT_IDX] = cur_row
+        self.infer_one_spec(idx=cur_row)
 
     def btn_match_next_clicked(self):
-        ...
+        cur_row = self.param_runtime[RT.CRT_IDX]
+        max_len = len(self.param_runtime[RT.SPEC_DATA]) - 1
+        if cur_row + 1 > max_len:
+            return
+        cur_row = min(cur_row + 1, max_len)
+        self.param_runtime[RT.CRT_IDX] = cur_row
+        self.infer_one_spec(idx=cur_row)
 
-    def ckbox_rm_co2_h2o(self, state: int):
-        ...
+    def ckbox_rm_co2(self, state: int):
+        if state == Qt.CheckState.Checked:
+            self.settings.co2 = True
+        elif state == Qt.CheckState.Unchecked:
+            self.settings.co2 = False
+        else:
+            self.logger.warning(f"checkbox co2 stat is 1")
+        save_config(self.settings)
+
+    def dspbox_co2_changed(self, v: float):
+        self.settings.co2fac = v
+        save_config(self.settings)
+
+    def ckbox_rm_h2o(self, state: int):
+        if state == Qt.CheckState.Checked:
+            self.settings.h2o = True
+        elif state == Qt.CheckState.Unchecked:
+            self.settings.h2o = False
+        else:
+            self.logger.warning(f"checkbox co2 stat is 1")
+        save_config(self.settings)
 
     def cmbox_analyze_changed(self, idx: int):
-        ...
+        self.settings.analyze = idx
+        save_config(self.settings)
 
     def cmbox_method_changed(self, idx: int):
-        ...
+        self.settings.method = idx
+        self.update_model()
+        save_config(self.settings)
+
+    def topn_finished(self):
+        self.settings.topn = self.spbox_spec_topn.value()
+        save_config(self.settings)
+
+    def update_model(self):
+        label_name = QFile(":/json/data/label_name.json")
+        label_name.open(QIODeviceBase.ReadOnly)
+        label_name_str = label_name.readAll().toStdString()
+        method = self.settings.method
+        if method == 0:  # CNN
+            model_path = self.settings.cnn
+            self.logger.debug(f"switching model to [{model_path}]")
+            if not os.path.exists(model_path):
+                self.show_warning_msg(f"model path {model_path} not exists!")
+                return
+            self.inferer = MpInferenceNNONNX(
+                model_path=model_path,
+                label_name=label_name_str,
+            )
+            return
+        elif method == 1:  # RF
+            model_path = self.settings.rf
+        elif method == 2:  # LSVM
+            model_path = self.settings.lsvm
+        else:
+            self.logger.error(f"method [{method}] not supported")
+            self.show_warning_msg(f"method [{method}] not supported")
+            return
+        if not os.path.exists(model_path):
+            self.show_warning_msg(f"model path {model_path} not exists!")
+            return
+        self.logger.debug(f"switching model to [{model_path}]")
+        self.inferer = MpInferenceSKL(
+            model_path=model_path,
+            label_name=label_name_str,
+        )
 
     def btn_match_clicked(self):
-        ...
+        idx = self.listw_pre_files.currentRow()
+        self.infer_one_spec(idx=idx)
+
+    def infer_one_spec(self, idx):
+        if idx < 0 or idx >= len(self.param_runtime[RT.SPEC_DATA]):
+            self.show_warning_msg(f"No data selected!")
+            return
+        xy = self.get_current_spec(cur_row=idx)
+        if isinstance(xy[0], bool) and not xy[0]:
+            self.show_warning_msg(f"Get spectrum failed!")
+            return
+        analyze = self.settings.analyze
+        if analyze == 0:  # processed
+            self.preprocess_one_spec(x=xy[0], y=xy[1])
+        xy = (self.spectrum.x, self.spectrum.y)
+        spec = np.vstack(xy).T
+        rmco2 = self.settings.co2
+        co2fac = self.settings.co2fac
+        topn = self.settings.topn
+        im = self.inferer.read_plot_csv(spec=spec, rmco2=rmco2, fac=co2fac)
+        out = self.inferer([im], topk=topn)
+        self.logger.debug(out)
+        self.table_match_res.setRowCount(0)
+        for i, row in enumerate(out):
+            r = "+".join(row[0])
+            self.table_match_res.insertRow(i)
+            self.table_match_res.setItem(i, 0, QTableWidgetItem(r))
+            self.table_match_res.setItem(i, 1, QTableWidgetItem(f"{row[1]*100:.2f}"))
+        self.statusbar.showMessage(f"{self.param_runtime[RT.SELECTED_FILES][idx]}")
+        self.update_match_plot()
 
     def spec_set_browse_btn_clicked(self, btn: QAbstractButton):
-        ...
+        idx = self.btngrp_spec_set_browse.id(btn)
+        filename = QFileDialog.getOpenFileName(
+            self,
+            caption="Select Model",
+            dir=".",
+            filter="ONNX (*.onnx);;Pickle (*.pkl)",
+        )
+        fpath = filename[0]
+        if not fpath:
+            return
+        if idx == BTN.CNN.value:
+            self.settings.cnn = fpath
+            self.ledit_spec_set_model_cnn.setText(fpath)
+        elif idx == BTN.RF.value:
+            self.settings.rf = fpath
+            self.ledit_spec_set_model_rf.setText(fpath)
+        elif idx == BTN.LSVM.value:
+            self.settings.lsvm = fpath
+            self.ledit_spec_set_model_lsvm.setText(fpath)
+        else:
+            self.logger.warning(f"button idx {idx} not specified")
+        save_config(self.settings)
+
+    def get_current_spec(self, cur_row: int = None):
+        if cur_row is None:
+            cur_row = self.param_runtime[RT.CRT_IDX]
+        if cur_row == -1:
+            return (False, False)
+        x: np.ndarray = self.param_runtime[RT.SPEC_DATA][cur_row][PLOT.X]
+        y: np.ndarray = self.param_runtime[RT.SPEC_DATA][cur_row][PLOT.Y]
+        return (x, y)
 
     def read_csv(self, fpath: str) -> Union[Dict[PLOT, np.ndarray], bool]:
         try:
@@ -249,21 +421,40 @@ class mPSAT(QMainWindow, Ui_MainWindow):
             self.logger.warning(f"csv file [{fpath}] is not valid!, error: [{e}]")
             return False
 
-    def update_pre_plot(self):
-        cur_row = self.listw_pre_files.currentRow()
-        if cur_row == -1:
-            return
-        x = self.param_runtime[RT.SPEC_DATA][cur_row][PLOT.X]
-        y = self.param_runtime[RT.SPEC_DATA][cur_row][PLOT.Y]
-        rmin = self.param_preprocess[PP.MIN]
-        rmax = self.param_preprocess[PP.MAX]
-        smooth = self.param_preprocess[PP.SMOOTH]
-        baseline = self.param_preprocess[PP.BASELINE]
-        adj_neg = self.param_preprocess[PP.ADJ_NEG]
-        self.spectrum = Spectrum()
+    def update_match_plot(self):
+        name1 = "Original"
+        x = self.spectrum.x_rg
+        y = self.spectrum.y_rg
+        if self.settings.analyze == 0:
+            name1 = "Processed"
+            x = self.spectrum.x
+            y = self.spectrum.y
+        xy = np.vstack((x, y)).T
+        x_co2, y_co2 = self.inferer.rm_co2(xy, self.settings.co2fac).T
+        self.fig_spec_match.update_plot(
+            x=x,
+            y=y,
+            name1=name1,
+            x1=x_co2,
+            y1=y_co2,
+            name2="CO<sub>2</sub> removed",
+        )
+
+    def preprocess_one_spec(self, x: np.ndarray, y: np.ndarray) -> None:
+        rmin = self.settings.rmin
+        rmax = self.settings.rmax
+        smooth = self.settings.smooth
+        baseline = self.settings.baseline
+        adj_neg = self.settings.adjneg
         self.spectrum.set_spec(x=x, y=y, range_min=rmin, range_max=rmax)
         self.spectrum.preprocess(smooth=smooth, baseline=baseline, adj_neg=adj_neg)
-        self.fig_spec_pre.update_pre_plot(
+
+    def update_pre_plot(self):
+        x, y = self.get_current_spec()
+        if isinstance(x, bool) and not x:
+            return
+        self.preprocess_one_spec(x=x, y=y)
+        self.fig_spec_pre.update_plot(
             x=self.spectrum.x_rg,
             y=self.spectrum.y_rg,
             x1=self.spectrum.x,
@@ -271,6 +462,7 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         )
 
     def on_pre_listw_current_row_changed(self, row: int):
+        self.param_runtime[RT.CRT_IDX] = row
         if row == -1:
             self.fig_spec_pre.reset_plot()
         else:

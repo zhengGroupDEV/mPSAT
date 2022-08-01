@@ -17,13 +17,13 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox,
-    QFrame, QGridLayout, QGroupBox, QHBoxLayout,
-    QHeaderView, QLabel, QLineEdit, QListWidget,
-    QListWidgetItem, QMainWindow, QMenu, QMenuBar,
-    QPushButton, QRadioButton, QSizePolicy, QSlider,
-    QSpacerItem, QSplitter, QStatusBar, QTabWidget,
-    QTableWidget, QTableWidgetItem, QTextBrowser, QVBoxLayout,
-    QWidget)
+    QDoubleSpinBox, QFrame, QGridLayout, QGroupBox,
+    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
+    QListWidget, QListWidgetItem, QMainWindow, QMenu,
+    QMenuBar, QPushButton, QRadioButton, QSizePolicy,
+    QSlider, QSpacerItem, QSpinBox, QSplitter,
+    QStatusBar, QTabWidget, QTableWidget, QTableWidgetItem,
+    QTextBrowser, QVBoxLayout, QWidget)
 
 from src.mplot_widget import MPlotWidget
 import mpsat_rc
@@ -96,6 +96,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.splitter_3.sizePolicy().hasHeightForWidth())
         self.splitter_3.setSizePolicy(sizePolicy)
         self.splitter_3.setOrientation(Qt.Vertical)
+        self.splitter_3.setHandleWidth(3)
         self.splitter_2 = QSplitter(self.splitter_3)
         self.splitter_2.setObjectName(u"splitter_2")
         sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
@@ -105,6 +106,7 @@ class Ui_MainWindow(object):
         self.splitter_2.setSizePolicy(sizePolicy1)
         self.splitter_2.setMinimumSize(QSize(0, 200))
         self.splitter_2.setOrientation(Qt.Horizontal)
+        self.splitter_2.setHandleWidth(3)
         self.verticalLayoutWidget_2 = QWidget(self.splitter_2)
         self.verticalLayoutWidget_2.setObjectName(u"verticalLayoutWidget_2")
         self.verticalLayout_2 = QVBoxLayout(self.verticalLayoutWidget_2)
@@ -208,32 +210,10 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addWidget(self.label_pre_smooth, 0, 6, 1, 1)
 
-        self.ledit_pre_min = QLineEdit(self.groupBox_2)
-        self.ledit_pre_min.setObjectName(u"ledit_pre_min")
-        sizePolicy5 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.ledit_pre_min.sizePolicy().hasHeightForWidth())
-        self.ledit_pre_min.setSizePolicy(sizePolicy5)
-        self.ledit_pre_min.setMaximumSize(QSize(60, 16777215))
-
-        self.gridLayout_3.addWidget(self.ledit_pre_min, 0, 1, 1, 1)
-
         self.label_13 = QLabel(self.groupBox_2)
         self.label_13.setObjectName(u"label_13")
 
         self.gridLayout_3.addWidget(self.label_13, 0, 4, 1, 1)
-
-        self.ledit_pre_max = QLineEdit(self.groupBox_2)
-        self.ledit_pre_max.setObjectName(u"ledit_pre_max")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.ledit_pre_max.sizePolicy().hasHeightForWidth())
-        self.ledit_pre_max.setSizePolicy(sizePolicy6)
-        self.ledit_pre_max.setMaximumSize(QSize(60, 16777215))
-
-        self.gridLayout_3.addWidget(self.ledit_pre_max, 1, 1, 1, 1)
 
         self.slider_pre_baseline = QSlider(self.groupBox_2)
         self.slider_pre_baseline.setObjectName(u"slider_pre_baseline")
@@ -253,13 +233,30 @@ class Ui_MainWindow(object):
 
         self.btn_pre_save = QPushButton(self.groupBox_2)
         self.btn_pre_save.setObjectName(u"btn_pre_save")
-        sizePolicy7 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        sizePolicy7.setHorizontalStretch(0)
-        sizePolicy7.setVerticalStretch(0)
-        sizePolicy7.setHeightForWidth(self.btn_pre_save.sizePolicy().hasHeightForWidth())
-        self.btn_pre_save.setSizePolicy(sizePolicy7)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.btn_pre_save.sizePolicy().hasHeightForWidth())
+        self.btn_pre_save.setSizePolicy(sizePolicy5)
 
         self.gridLayout_3.addWidget(self.btn_pre_save, 1, 7, 1, 1)
+
+        self.spbox_pre_min = QSpinBox(self.groupBox_2)
+        self.spbox_pre_min.setObjectName(u"spbox_pre_min")
+        sizePolicy5.setHeightForWidth(self.spbox_pre_min.sizePolicy().hasHeightForWidth())
+        self.spbox_pre_min.setSizePolicy(sizePolicy5)
+        self.spbox_pre_min.setMaximum(6000)
+
+        self.gridLayout_3.addWidget(self.spbox_pre_min, 0, 1, 1, 1)
+
+        self.spbox_pre_max = QSpinBox(self.groupBox_2)
+        self.spbox_pre_max.setObjectName(u"spbox_pre_max")
+        sizePolicy5.setHeightForWidth(self.spbox_pre_max.sizePolicy().hasHeightForWidth())
+        self.spbox_pre_max.setSizePolicy(sizePolicy5)
+        self.spbox_pre_max.setMaximum(6000)
+        self.spbox_pre_max.setValue(6000)
+
+        self.gridLayout_3.addWidget(self.spbox_pre_max, 1, 1, 1, 1)
 
 
         self.gridLayout_6.addLayout(self.gridLayout_3, 0, 0, 1, 1)
@@ -274,6 +271,10 @@ class Ui_MainWindow(object):
         self.splitter_2.addWidget(self.verticalLayoutWidget_2)
         self.groupBox_3 = QGroupBox(self.splitter_2)
         self.groupBox_3.setObjectName(u"groupBox_3")
+        sizePolicy3.setHeightForWidth(self.groupBox_3.sizePolicy().hasHeightForWidth())
+        self.groupBox_3.setSizePolicy(sizePolicy3)
+        self.groupBox_3.setMinimumSize(QSize(10, 50))
+        self.groupBox_3.setFlat(False)
         self.gridLayout_5 = QGridLayout(self.groupBox_3)
         self.gridLayout_5.setObjectName(u"gridLayout_5")
         self.gridLayout_5.setContentsMargins(0, 0, 0, 0)
@@ -281,6 +282,12 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.listw_pre_files = QListWidget(self.groupBox_3)
         self.listw_pre_files.setObjectName(u"listw_pre_files")
+        sizePolicy6 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.listw_pre_files.sizePolicy().hasHeightForWidth())
+        self.listw_pre_files.setSizePolicy(sizePolicy6)
+        self.listw_pre_files.setMinimumSize(QSize(10, 50))
         self.listw_pre_files.setSortingEnabled(True)
 
         self.verticalLayout.addWidget(self.listw_pre_files)
@@ -298,8 +305,8 @@ class Ui_MainWindow(object):
 
         self.btn_select_file_dir = QPushButton(self.groupBox_3)
         self.btn_select_file_dir.setObjectName(u"btn_select_file_dir")
-        sizePolicy4.setHeightForWidth(self.btn_select_file_dir.sizePolicy().hasHeightForWidth())
-        self.btn_select_file_dir.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.btn_select_file_dir.sizePolicy().hasHeightForWidth())
+        self.btn_select_file_dir.setSizePolicy(sizePolicy5)
 
         self.horizontalLayout.addWidget(self.btn_select_file_dir)
 
@@ -349,11 +356,29 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_8.addWidget(self.ckbox_h2o)
 
+        self.label_3 = QLabel(self.tabOSpecMatch)
+        self.label_3.setObjectName(u"label_3")
+
+        self.horizontalLayout_8.addWidget(self.label_3)
+
         self.ckbox_co2 = QCheckBox(self.tabOSpecMatch)
         self.ckbox_co2.setObjectName(u"ckbox_co2")
         self.ckbox_co2.setTristate(False)
 
         self.horizontalLayout_8.addWidget(self.ckbox_co2)
+
+        self.label_4 = QLabel(self.tabOSpecMatch)
+        self.label_4.setObjectName(u"label_4")
+
+        self.horizontalLayout_8.addWidget(self.label_4)
+
+        self.dspbox_co2 = QDoubleSpinBox(self.tabOSpecMatch)
+        self.dspbox_co2.setObjectName(u"dspbox_co2")
+        self.dspbox_co2.setMaximum(1.000000000000000)
+        self.dspbox_co2.setSingleStep(0.010000000000000)
+        self.dspbox_co2.setValue(0.200000000000000)
+
+        self.horizontalLayout_8.addWidget(self.dspbox_co2)
 
         self.line_5 = QFrame(self.tabOSpecMatch)
         self.line_5.setObjectName(u"line_5")
@@ -364,11 +389,11 @@ class Ui_MainWindow(object):
 
         self.label_24 = QLabel(self.tabOSpecMatch)
         self.label_24.setObjectName(u"label_24")
-        sizePolicy8 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy8.setHorizontalStretch(0)
-        sizePolicy8.setVerticalStretch(0)
-        sizePolicy8.setHeightForWidth(self.label_24.sizePolicy().hasHeightForWidth())
-        self.label_24.setSizePolicy(sizePolicy8)
+        sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(0)
+        sizePolicy7.setHeightForWidth(self.label_24.sizePolicy().hasHeightForWidth())
+        self.label_24.setSizePolicy(sizePolicy7)
 
         self.horizontalLayout_8.addWidget(self.label_24)
 
@@ -376,8 +401,11 @@ class Ui_MainWindow(object):
         self.cbox_match_analyze.addItem("")
         self.cbox_match_analyze.addItem("")
         self.cbox_match_analyze.setObjectName(u"cbox_match_analyze")
-        sizePolicy7.setHeightForWidth(self.cbox_match_analyze.sizePolicy().hasHeightForWidth())
-        self.cbox_match_analyze.setSizePolicy(sizePolicy7)
+        sizePolicy8 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy8.setHorizontalStretch(0)
+        sizePolicy8.setVerticalStretch(0)
+        sizePolicy8.setHeightForWidth(self.cbox_match_analyze.sizePolicy().hasHeightForWidth())
+        self.cbox_match_analyze.setSizePolicy(sizePolicy8)
 
         self.horizontalLayout_8.addWidget(self.cbox_match_analyze)
 
@@ -425,6 +453,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.splitter.sizePolicy().hasHeightForWidth())
         self.splitter.setSizePolicy(sizePolicy)
         self.splitter.setOrientation(Qt.Horizontal)
+        self.splitter.setHandleWidth(3)
         self.verticalLayoutWidget_3 = QWidget(self.splitter)
         self.verticalLayoutWidget_3.setObjectName(u"verticalLayoutWidget_3")
         self.verticalLayout_8 = QVBoxLayout(self.verticalLayoutWidget_3)
@@ -432,26 +461,29 @@ class Ui_MainWindow(object):
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.fig_spec_match = MPlotWidget(self.verticalLayoutWidget_3)
         self.fig_spec_match.setObjectName(u"fig_spec_match")
+        sizePolicy9 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy9.setHorizontalStretch(6)
+        sizePolicy9.setVerticalStretch(0)
+        sizePolicy9.setHeightForWidth(self.fig_spec_match.sizePolicy().hasHeightForWidth())
+        self.fig_spec_match.setSizePolicy(sizePolicy9)
 
         self.verticalLayout_8.addWidget(self.fig_spec_match)
 
         self.splitter.addWidget(self.verticalLayoutWidget_3)
         self.table_match_res = QTableWidget(self.splitter)
-        if (self.table_match_res.columnCount() < 3):
-            self.table_match_res.setColumnCount(3)
+        if (self.table_match_res.columnCount() < 2):
+            self.table_match_res.setColumnCount(2)
         __qtablewidgetitem = QTableWidgetItem()
         self.table_match_res.setHorizontalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
         self.table_match_res.setHorizontalHeaderItem(1, __qtablewidgetitem1)
-        __qtablewidgetitem2 = QTableWidgetItem()
-        self.table_match_res.setHorizontalHeaderItem(2, __qtablewidgetitem2)
         self.table_match_res.setObjectName(u"table_match_res")
-        sizePolicy9 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Expanding)
-        sizePolicy9.setHorizontalStretch(1)
-        sizePolicy9.setVerticalStretch(0)
-        sizePolicy9.setHeightForWidth(self.table_match_res.sizePolicy().hasHeightForWidth())
-        self.table_match_res.setSizePolicy(sizePolicy9)
-        self.table_match_res.setMinimumSize(QSize(0, 0))
+        sizePolicy10 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        sizePolicy10.setHorizontalStretch(1)
+        sizePolicy10.setVerticalStretch(0)
+        sizePolicy10.setHeightForWidth(self.table_match_res.sizePolicy().hasHeightForWidth())
+        self.table_match_res.setSizePolicy(sizePolicy10)
+        self.table_match_res.setMinimumSize(QSize(100, 0))
         self.table_match_res.setEditTriggers(QAbstractItemView.SelectedClicked)
         self.table_match_res.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table_match_res.setSortingEnabled(True)
@@ -472,15 +504,15 @@ class Ui_MainWindow(object):
         self.tabWidget_2.addTab(self.tabOSpecMatch, "")
         self.tabOSpecSettings = QWidget()
         self.tabOSpecSettings.setObjectName(u"tabOSpecSettings")
-        self.gridLayout_17 = QGridLayout(self.tabOSpecSettings)
-        self.gridLayout_17.setObjectName(u"gridLayout_17")
+        self.gridLayout_10 = QGridLayout(self.tabOSpecSettings)
+        self.gridLayout_10.setObjectName(u"gridLayout_10")
         self.groupBox_6 = QGroupBox(self.tabOSpecSettings)
         self.groupBox_6.setObjectName(u"groupBox_6")
-        sizePolicy10 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        sizePolicy10.setHorizontalStretch(0)
-        sizePolicy10.setVerticalStretch(0)
-        sizePolicy10.setHeightForWidth(self.groupBox_6.sizePolicy().hasHeightForWidth())
-        self.groupBox_6.setSizePolicy(sizePolicy10)
+        sizePolicy11 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        sizePolicy11.setHorizontalStretch(0)
+        sizePolicy11.setVerticalStretch(0)
+        sizePolicy11.setHeightForWidth(self.groupBox_6.sizePolicy().hasHeightForWidth())
+        self.groupBox_6.setSizePolicy(sizePolicy11)
         self.gridLayout_16 = QGridLayout(self.groupBox_6)
         self.gridLayout_16.setObjectName(u"gridLayout_16")
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
@@ -489,26 +521,33 @@ class Ui_MainWindow(object):
 
         self.gridLayout_15 = QGridLayout()
         self.gridLayout_15.setObjectName(u"gridLayout_15")
+        self.label = QLabel(self.groupBox_6)
+        self.label.setObjectName(u"label")
+        self.label.setAlignment(Qt.AlignCenter)
+
+        self.gridLayout_15.addWidget(self.label, 1, 0, 1, 1)
+
+        self.btn_spec_set_lsvm = QPushButton(self.groupBox_6)
+        self.btn_spec_set_lsvm.setObjectName(u"btn_spec_set_lsvm")
+
+        self.gridLayout_15.addWidget(self.btn_spec_set_lsvm, 3, 2, 1, 1)
+
+        self.btn_spec_set_cnn = QPushButton(self.groupBox_6)
+        self.btn_spec_set_cnn.setObjectName(u"btn_spec_set_cnn")
+
+        self.gridLayout_15.addWidget(self.btn_spec_set_cnn, 0, 2, 1, 1)
+
         self.label_30 = QLabel(self.groupBox_6)
         self.label_30.setObjectName(u"label_30")
         self.label_30.setAlignment(Qt.AlignCenter)
 
         self.gridLayout_15.addWidget(self.label_30, 0, 0, 1, 1)
 
-        self.ledit_spec_set_model_rf = QLineEdit(self.groupBox_6)
-        self.ledit_spec_set_model_rf.setObjectName(u"ledit_spec_set_model_rf")
+        self.ledit_spec_set_model_cnn = QLineEdit(self.groupBox_6)
+        self.ledit_spec_set_model_cnn.setObjectName(u"ledit_spec_set_model_cnn")
+        self.ledit_spec_set_model_cnn.setReadOnly(True)
 
-        self.gridLayout_15.addWidget(self.ledit_spec_set_model_rf, 1, 1, 1, 1)
-
-        self.ledit_spec_set_model_lsvm = QLineEdit(self.groupBox_6)
-        self.ledit_spec_set_model_lsvm.setObjectName(u"ledit_spec_set_model_lsvm")
-
-        self.gridLayout_15.addWidget(self.ledit_spec_set_model_lsvm, 3, 1, 1, 1)
-
-        self.btn_spec_set_rf = QPushButton(self.groupBox_6)
-        self.btn_spec_set_rf.setObjectName(u"btn_spec_set_rf")
-
-        self.gridLayout_15.addWidget(self.btn_spec_set_rf, 1, 2, 1, 1)
+        self.gridLayout_15.addWidget(self.ledit_spec_set_model_cnn, 0, 1, 1, 1)
 
         self.label_31 = QLabel(self.groupBox_6)
         self.label_31.setObjectName(u"label_31")
@@ -516,32 +555,42 @@ class Ui_MainWindow(object):
 
         self.gridLayout_15.addWidget(self.label_31, 3, 0, 1, 1)
 
-        self.btn_spec_set_lsvm = QPushButton(self.groupBox_6)
-        self.btn_spec_set_lsvm.setObjectName(u"btn_spec_set_lsvm")
+        self.btn_spec_set_rf = QPushButton(self.groupBox_6)
+        self.btn_spec_set_rf.setObjectName(u"btn_spec_set_rf")
 
-        self.gridLayout_15.addWidget(self.btn_spec_set_lsvm, 3, 2, 1, 1)
+        self.gridLayout_15.addWidget(self.btn_spec_set_rf, 1, 2, 1, 1)
 
-        self.label = QLabel(self.groupBox_6)
-        self.label.setObjectName(u"label")
-        self.label.setAlignment(Qt.AlignCenter)
+        self.ledit_spec_set_model_rf = QLineEdit(self.groupBox_6)
+        self.ledit_spec_set_model_rf.setObjectName(u"ledit_spec_set_model_rf")
+        self.ledit_spec_set_model_rf.setReadOnly(True)
 
-        self.gridLayout_15.addWidget(self.label, 1, 0, 1, 1)
+        self.gridLayout_15.addWidget(self.ledit_spec_set_model_rf, 1, 1, 1, 1)
 
-        self.btn_spec_set_cnn = QPushButton(self.groupBox_6)
-        self.btn_spec_set_cnn.setObjectName(u"btn_spec_set_cnn")
+        self.ledit_spec_set_model_lsvm = QLineEdit(self.groupBox_6)
+        self.ledit_spec_set_model_lsvm.setObjectName(u"ledit_spec_set_model_lsvm")
+        self.ledit_spec_set_model_lsvm.setReadOnly(True)
 
-        self.gridLayout_15.addWidget(self.btn_spec_set_cnn, 0, 2, 1, 1)
+        self.gridLayout_15.addWidget(self.ledit_spec_set_model_lsvm, 3, 1, 1, 1)
 
-        self.ledit_spec_set_model_cnn = QLineEdit(self.groupBox_6)
-        self.ledit_spec_set_model_cnn.setObjectName(u"ledit_spec_set_model_cnn")
+        self.label_2 = QLabel(self.groupBox_6)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setAlignment(Qt.AlignCenter)
 
-        self.gridLayout_15.addWidget(self.ledit_spec_set_model_cnn, 0, 1, 1, 1)
+        self.gridLayout_15.addWidget(self.label_2, 4, 0, 1, 1)
+
+        self.spbox_spec_topn = QSpinBox(self.groupBox_6)
+        self.spbox_spec_topn.setObjectName(u"spbox_spec_topn")
+        self.spbox_spec_topn.setMinimum(1)
+        self.spbox_spec_topn.setMaximum(120)
+        self.spbox_spec_topn.setValue(10)
+
+        self.gridLayout_15.addWidget(self.spbox_spec_topn, 4, 1, 1, 1)
 
 
         self.gridLayout_16.addLayout(self.gridLayout_15, 0, 0, 1, 1)
 
 
-        self.gridLayout_17.addWidget(self.groupBox_6, 0, 0, 1, 1)
+        self.gridLayout_10.addWidget(self.groupBox_6, 0, 0, 1, 1)
 
         self.tabWidget_2.addTab(self.tabOSpecSettings, "")
 
@@ -624,7 +673,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(0)
         self.tabSet.setCurrentIndex(0)
 
@@ -649,21 +698,20 @@ class Ui_MainWindow(object):
         self.label_pre_baseline.setText(QCoreApplication.translate("MainWindow", u"8", None))
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"Max:", None))
         self.label_pre_smooth.setText(QCoreApplication.translate("MainWindow", u"3", None))
-        self.ledit_pre_min.setInputMask("")
-        self.ledit_pre_min.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Smooth:", None))
-        self.ledit_pre_max.setInputMask("")
-        self.ledit_pre_max.setText(QCoreApplication.translate("MainWindow", u"6000", None))
         self.ckbox_adjneg.setText(QCoreApplication.translate("MainWindow", u"AdjNeg", None))
         self.btn_pre_save.setText(QCoreApplication.translate("MainWindow", u"Save Spectrum", None))
+        self.spbox_pre_max.setPrefix("")
         self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Selected Files", None))
         self.btn_pop_pre_files.setText(QCoreApplication.translate("MainWindow", u"-", None))
         self.btn_select_file_dir.setText(QCoreApplication.translate("MainWindow", u"+", None))
         self.btn_clear_pre_files.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabOSpecProcess), QCoreApplication.translate("MainWindow", u"Preprocess", None))
         self.btn_spec_match_prev.setText(QCoreApplication.translate("MainWindow", u"Prev", None))
-        self.ckbox_h2o.setText(QCoreApplication.translate("MainWindow", u"H2O", None))
-        self.ckbox_co2.setText(QCoreApplication.translate("MainWindow", u"CO2", None))
+        self.ckbox_h2o.setText("")
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"H<sub>2</sub>O", None))
+        self.ckbox_co2.setText("")
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"CO<sub>2</sub>", None))
 #if QT_CONFIG(tooltip)
         self.label_24.setToolTip(QCoreApplication.translate("MainWindow", u"which spectrum you want to analyze.", None))
 #endif // QT_CONFIG(tooltip)
@@ -679,19 +727,21 @@ class Ui_MainWindow(object):
         self.btn_match_go.setText(QCoreApplication.translate("MainWindow", u"Match", None))
         self.btn_spec_match_next.setText(QCoreApplication.translate("MainWindow", u"Next", None))
         ___qtablewidgetitem = self.table_match_res.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"NO.", None));
+        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"Type", None));
         ___qtablewidgetitem1 = self.table_match_res.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Name", None));
-        ___qtablewidgetitem2 = self.table_match_res.horizontalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"r", None));
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"P(%)", None));
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabOSpecMatch), QCoreApplication.translate("MainWindow", u"Match", None))
         self.groupBox_6.setTitle(QCoreApplication.translate("MainWindow", u"Model Path", None))
-        self.label_30.setText(QCoreApplication.translate("MainWindow", u"CNN Path:", None))
-        self.btn_spec_set_rf.setText(QCoreApplication.translate("MainWindow", u"Browse", None))
-        self.label_31.setText(QCoreApplication.translate("MainWindow", u"LSVM Path:", None))
-        self.btn_spec_set_lsvm.setText(QCoreApplication.translate("MainWindow", u"Browse", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"RF Path:", None))
+        self.btn_spec_set_lsvm.setText(QCoreApplication.translate("MainWindow", u"Browse", None))
         self.btn_spec_set_cnn.setText(QCoreApplication.translate("MainWindow", u"Browse", None))
+        self.label_30.setText(QCoreApplication.translate("MainWindow", u"CNN Path:", None))
+        self.ledit_spec_set_model_cnn.setPlaceholderText(QCoreApplication.translate("MainWindow", u"CNN model path", None))
+        self.label_31.setText(QCoreApplication.translate("MainWindow", u"LSVM Path:", None))
+        self.btn_spec_set_rf.setText(QCoreApplication.translate("MainWindow", u"Browse", None))
+        self.ledit_spec_set_model_rf.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Random Forest path", None))
+        self.ledit_spec_set_model_lsvm.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Linear SVM path", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Top-n:", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabOSpecSettings), QCoreApplication.translate("MainWindow", u"Settings", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabSpec), QCoreApplication.translate("MainWindow", u"Spectroscopy", None))
         self.label_33.setText(QCoreApplication.translate("MainWindow", u"Log Level:", None))
