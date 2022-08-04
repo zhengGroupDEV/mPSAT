@@ -253,6 +253,7 @@ class Ui_MainWindow(object):
         font4.setFamilies([u"MiSans Demibold"])
         self.textBrowser.setFont(font4)
         self.textBrowser.setStyleSheet(u"")
+        self.textBrowser.setOpenExternalLinks(True)
 
         self.gridLayout_4.addWidget(self.textBrowser, 1, 0, 1, 1)
 
