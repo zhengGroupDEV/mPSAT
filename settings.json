@@ -1,1 +1,0 @@
-{"deploy": {"SPEC_TYPE": "FTIR", "RMIN": 400, "RMAX": 4000, "SMOOTH": 3, "BASELINE": 8, "ADJNEG": false, "H2O": false, "CO2": true, "CO2FAC": 0.2, "ANALYZE": 0, "METHOD": 0, "CNN": "E:/DEV/mPSAT/data/3.onnx", "RF": "E:/DEV/mPSAT/data/clfRF.pkl", "LSVM": "E:/DEV/mPSAT/data/clfLinearSVC.pkl", "TOPN": 20, "LOGLV": 0, "LANG": "English"}}
