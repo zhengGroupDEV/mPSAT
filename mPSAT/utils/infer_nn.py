@@ -10,7 +10,7 @@ import numpy as np
 from PIL import Image
 from argparse import ArgumentParser
 
-from src.infer_base import MpInferenceBase
+from mPSAT.utils.infer_base import MpInferenceBase
 
 
 class MpInferenceNNONNX(MpInferenceBase):

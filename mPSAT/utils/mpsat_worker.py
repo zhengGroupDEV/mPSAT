@@ -8,9 +8,9 @@ import time
 from typing import Tuple, Union
 from PySide6.QtCore import QObject, Signal, Slot
 
-from src.infer_base import MpInferenceBase
-from src.infer_nn import MpInferenceNNONNX
-from src.infer_skl import MpInferenceSKL
+from mPSAT.utils.infer_base import MpInferenceBase
+from mPSAT.utils.infer_nn import MpInferenceNNONNX
+from mPSAT.utils.infer_skl import MpInferenceSKL
 
 
 class MatchWorker(QObject):

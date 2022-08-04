@@ -6,8 +6,8 @@ LastEditTime: 2022-08-04 15:58:11
 import sys
 from PySide6.QtWidgets import QApplication
 
-from src.mpsatApp import mPSAT
-from src.splash import Splash
+from mPSAT.mpsatApp import mPSAT
+from mPSAT.splash import Splash
 
 
 if __name__ == "__main__":

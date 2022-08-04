@@ -8,7 +8,7 @@
             "name": "MPSAT",
             "type": "python",
             "request": "launch",
-            "module": "src.mpsat",
+            "module": "mPSAT.mpsat",
             "justMyCode": true
         }
     ]

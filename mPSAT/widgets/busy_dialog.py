@@ -5,7 +5,7 @@ LastEditTime: 2022-08-04 10:29:21
 """
 from PySide6.QtCore import QEventLoop, QTimer
 from PySide6.QtWidgets import QDialog
-from src.widgets.busy_dialogUI import Ui_Dialog
+from mPSAT.widgets.busy_dialogUI import Ui_Dialog
 
 
 class BusyDialog(QDialog):

@@ -16,7 +16,7 @@ import sklearn.svm as svm
 from sklearn.ensemble import RandomForestClassifier
 from argparse import ArgumentParser
 
-from src.infer_base import MpInferenceBase
+from mPSAT.utils.infer_base import MpInferenceBase
 
 
 class MpInferenceSKL(MpInferenceBase):

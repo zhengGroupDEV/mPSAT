@@ -17,16 +17,16 @@ from PySide6.QtWidgets import (
     QTableWidgetItem,
 )
 
-from src.utils.spectroscopy import Spectrum
-from src.utils.enum import RT, PLOT, BTN
-from src.mpsatUI import Ui_MainWindow
-from src.utils.logger import MPSATLogger
-from src.utils.infer_base import MpInferenceBase
-from src.utils.infer_nn import MpInferenceNNONNX
-from src.utils.infer_skl import MpInferenceSKL
-from src.utils.msettings import MpsatSettings
-from src.widgets.busy_dialog import BusyDialog
-from src.utils.mpsat_worker import LoadModelWorker
+from mPSAT.utils.spectroscopy import Spectrum
+from mPSAT.utils.enum import RT, PLOT, BTN
+from mPSAT.mpsatUI import Ui_MainWindow
+from mPSAT.utils.logger import MPSATLogger
+from mPSAT.utils.infer_base import MpInferenceBase
+from mPSAT.utils.infer_nn import MpInferenceNNONNX
+from mPSAT.utils.infer_skl import MpInferenceSKL
+from mPSAT.utils.msettings import MpsatSettings
+from mPSAT.widgets.busy_dialog import BusyDialog
+from mPSAT.utils.mpsat_worker import LoadModelWorker
 
 
 class mPSAT(QMainWindow, Ui_MainWindow):

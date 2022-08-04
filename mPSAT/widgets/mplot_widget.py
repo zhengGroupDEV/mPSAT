@@ -6,7 +6,7 @@ LastEditTime: 2022-07-31 21:20:42
 import numpy as np
 import pyqtgraph as pg
 
-from src.logger import MPSATLogger
+from mPSAT.utils.logger import MPSATLogger
 
 
 class MPlotWidget(pg.PlotWidget):

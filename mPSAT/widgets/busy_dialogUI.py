@@ -18,7 +18,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QDialog, QLabel, QSizePolicy,
     QWidget)
 
-from src.widgets.progress import CircularProgress
+from mPSAT.widgets.progress import CircularProgress
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):

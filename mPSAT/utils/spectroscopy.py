@@ -7,7 +7,7 @@ from typing import Dict
 import numpy as np
 from scipy.signal import savgol_filter
 
-from src.enum import SPEC, PLOT
+from mPSAT.utils.enum import SPEC, PLOT
 
 
 class Spectrum(object):

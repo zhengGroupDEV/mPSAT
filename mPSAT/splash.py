@@ -22,9 +22,9 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtGui import QColor
 
-from src.mpsatApp import mPSAT
-from src.splashUI import Ui_Splash
-from src.utils.mpsat_worker import LoadModelWorker
+from mPSAT.mpsatApp import mPSAT
+from mPSAT.splashUI import Ui_Splash
+from mPSAT.utils.mpsat_worker import LoadModelWorker
 
 
 class Splash(QMainWindow):

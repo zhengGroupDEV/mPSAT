@@ -24,7 +24,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComb
     QTableWidget, QTableWidgetItem, QTextBrowser, QVBoxLayout,
     QWidget)
 
-from src.widgets.mplot_widget import MPlotWidget
+from mPSAT.widgets.mplot_widget import MPlotWidget
 import mpsat_rc
 
 class Ui_MainWindow(object):

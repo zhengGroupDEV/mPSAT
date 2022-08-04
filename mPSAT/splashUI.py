@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
     QMainWindow, QPushButton, QSizePolicy, QVBoxLayout,
     QWidget)
 
-from src.widgets.progress import CircularProgress
+from mPSAT.widgets.progress import CircularProgress
 import mpsat_rc
 
 class Ui_Splash(object):

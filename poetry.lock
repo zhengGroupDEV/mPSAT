@@ -54,30 +54,40 @@ humanfriendly = ">=9.1"
 cron = ["capturer (>=2.4)"]
 
 [[package]]
+name = "cx-freeze"
+version = "6.11.1"
+description = "Create standalone executables from Python scripts"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+cx-logging = {version = ">=3.0", markers = "sys_platform == \"win32\" and python_version < \"3.10\""}
+importlib-metadata = {version = ">=4.8.3", markers = "python_version < \"3.10\""}
+lief = {version = ">=0.11.5", markers = "sys_platform == \"win32\" and python_version <= \"3.10\""}
+packaging = ">=21.0"
+patchelf = {version = ">=0.12", markers = "sys_platform == \"linux\""}
+
+[package.extras]
+dev = ["bump2version (>=1.0.1)", "pre-commit (>=2.17.0)", "pylint (>=2.13.0)", "cibuildwheel (==2.6.1)"]
+doc = ["sphinx (>=5.0.1,<6.0.0)", "sphinx-rtd-theme (==1.0.0)"]
+test = ["nose (==1.3.7)", "pygments (>=2.11.2)", "pytest (>=7.0.1)", "pytest-cov (==3.0.0)", "pytest-mock (>=3.6.1)", "pytest-timeout (>=1.4.2)"]
+
+[[package]]
+name = "cx-logging"
+version = "3.0"
+description = "Python and C interfaces for logging"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "cycler"
 version = "0.11.0"
 description = "Composable style cycles"
 category = "main"
 optional = false
 python-versions = ">=3.6"
-
-[[package]]
-name = "dynaconf"
-version = "3.1.9"
-description = "The dynamic configurator for your Python Project"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.extras]
-all = ["redis", "ruamel.yaml", "configobj", "hvac"]
-configobj = ["configobj"]
-ini = ["configobj"]
-redis = ["redis"]
-test = ["pytest", "pytest-cov", "pytest-xdist", "pytest-mock", "flake8", "pep8-naming", "flake8-debugger", "flake8-print", "flake8-todo", "radon", "flask (>=0.12)", "django", "python-dotenv", "toml", "codecov", "redis", "hvac", "configobj"]
-toml = ["toml"]
-vault = ["hvac"]
-yaml = ["ruamel.yaml"]
 
 [[package]]
 name = "flatbuffers"
@@ -121,10 +131,26 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 pyreadline3 = {version = "*", markers = "sys_platform == \"win32\" and python_version >= \"3.8\""}
 
 [[package]]
+name = "importlib-metadata"
+version = "4.12.0"
+description = "Read metadata from Python packages"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+zipp = ">=0.5"
+
+[package.extras]
+docs = ["sphinx", "jaraco.packaging (>=9)", "rst.linker (>=1.9)"]
+perf = ["ipython"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.3)", "packaging", "pyfakefs", "flufl.flake8", "pytest-perf (>=0.9.2)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "importlib-resources (>=1.3)"]
+
+[[package]]
 name = "jinja2"
 version = "3.1.2"
 description = "A very fast and expressive template engine."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 
@@ -151,10 +177,18 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "lief"
+version = "0.12.1"
+description = "Library to instrument executable formats"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "markupsafe"
 version = "2.1.1"
 description = "Safely add untrusted strings to HTML/XML markup."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 
@@ -198,6 +232,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "nuitka"
+version = "1.0"
+description = "Python compiler with full language support and CPython compatibility"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "numpy"
 version = "1.23.1"
 description = "NumPy is the fundamental package for array computing with Python."
@@ -222,6 +264,14 @@ protobuf = "*"
 sympy = "*"
 
 [[package]]
+name = "orderedset"
+version = "2.0.3"
+description = "An Ordered Set implementation in Cython."
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "packaging"
 version = "21.3"
 description = "Core utilities for Python packages"
@@ -231,6 +281,17 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
+
+[[package]]
+name = "patchelf"
+version = "0.15.0.0"
+description = "A small utility to modify the dynamic linker and RPATH of ELF executables."
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.extras]
+test = ["pytest", "importlib-metadata"]
 
 [[package]]
 name = "pathspec"
@@ -353,7 +414,7 @@ six = ">=1.5"
 name = "qt-material"
 version = "2.12"
 description = "Material inspired stylesheet for PySide2, PySide6, PyQt5 and PyQt6."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 
@@ -459,10 +520,22 @@ category = "main"
 optional = false
 python-versions = ">=3.7"
 
+[[package]]
+name = "zipp"
+version = "3.8.1"
+description = "Backport of pathlib-compatible object wrapper for zip files"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["sphinx", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "jaraco.tidelift (>=1.4)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.3)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
+
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11"
-content-hash = "bdf430b051abed86bfc6f2bd0dcd7e362af9d315ffe9dc599ddda295ab965cf2"
+content-hash = "470cbddc28626a41a5942b5a88c8f4807f2b5928f5f624a104ba09b65833574f"
 
 [metadata.files]
 black = []
@@ -472,20 +545,23 @@ colorama = [
     {file = "colorama-0.4.5.tar.gz", hash = "sha256:e6c6b4334fc50988a639d9b98aa429a0b57da6e17b9a44f0451f930b6967b7a4"},
 ]
 coloredlogs = []
+cx-freeze = []
+cx-logging = []
 cycler = [
     {file = "cycler-0.11.0-py3-none-any.whl", hash = "sha256:3a27e95f763a428a739d2add979fa7494c912a32c17c4c38c4d5f082cad165a3"},
     {file = "cycler-0.11.0.tar.gz", hash = "sha256:9c87405839a19696e837b3b818fed3f5f69f16f1eec1a1ad77e043dcea9c772f"},
 ]
-dynaconf = []
 flatbuffers = []
 fonttools = []
 humanfriendly = []
+importlib-metadata = []
 jinja2 = []
 joblib = [
     {file = "joblib-1.1.0-py2.py3-none-any.whl", hash = "sha256:f21f109b3c7ff9d95f8387f752d0d9c34a02aa2f7060c2135f465da0e5160ff6"},
     {file = "joblib-1.1.0.tar.gz", hash = "sha256:4158fcecd13733f8be669be0683b96ebdbbd38d23559f54dca7205aea1bf1e35"},
 ]
 kiwisolver = []
+lief = []
 markupsafe = []
 matplotlib = [
     {file = "matplotlib-3.5.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:03bbb3f5f78836855e127b5dab228d99551ad0642918ccbf3067fcd52ac7ac5e"},
@@ -529,12 +605,15 @@ mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
 ]
+nuitka = []
 numpy = []
 onnxruntime = []
+orderedset = []
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
     {file = "packaging-21.3.tar.gz", hash = "sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"},
 ]
+patchelf = []
 pathspec = []
 pillow = []
 platformdirs = []
@@ -606,3 +685,4 @@ tomli = [
     {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
 ]
 typing-extensions = []
+zipp = []
