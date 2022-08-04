@@ -2,7 +2,7 @@
 
 A (micro)plastic spectroscopy analyze tool - mPSAT
 
-The backend of this program is available at [mPSAT-backend](mPSAT-backend).
+The backend of this program is available at [mPSAT-backend](https://github.com/zhengGroupDEV/mPSAT-backend).
 
 ## Previews
 
