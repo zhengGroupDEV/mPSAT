@@ -26,7 +26,7 @@ from mPSAT.utils.infer_nn import MpInferenceNNONNX
 from mPSAT.utils.infer_skl import MpInferenceSKL
 from mPSAT.utils.msettings import MpsatSettings
 from mPSAT.widgets.busy_dialog import BusyDialog
-from mPSAT.utils.mpsat_worker import LoadModelWorker
+from mPSAT.utils.mpsat_worker import LoadModelWorker, MatchWorker
 
 
 class mPSAT(QMainWindow, Ui_MainWindow):
@@ -169,6 +169,7 @@ class mPSAT(QMainWindow, Ui_MainWindow):
     # Slots
     #########################################
 
+    @Slot()
     def btn_pop_pre_files_clicked(self):
         cur_row = self.listw_pre_files.currentRow()
         self.logger.debug(
@@ -179,11 +180,13 @@ class mPSAT(QMainWindow, Ui_MainWindow):
             self.param_runtime[RT.SPEC_DATA].pop(cur_row)
             self.listw_pre_files.takeItem(cur_row)
 
+    @Slot()
     def btn_pre_clear_clicked(self):
         self.param_runtime[RT.SELECTED_FILES].clear()
         self.param_runtime[RT.SPEC_DATA].clear()
         self.listw_pre_files.clear()
 
+    @Slot()
     def btn_select_file_dir_clicked(self):
         file_names = QFileDialog.getOpenFileNames(
             self,
@@ -199,7 +202,7 @@ class mPSAT(QMainWindow, Ui_MainWindow):
                 self.param_runtime[RT.SELECTED_FILES].clear()
         else:
             self.param_runtime[RT.FILE_TYPE] = fmt
-        if self.check_max_spec_num:
+        if self.check_max_spec_num(files):
             for p in files:
                 csv_data = self.read_csv(p)
                 if csv_data:
@@ -209,6 +212,7 @@ class mPSAT(QMainWindow, Ui_MainWindow):
                     self.show_warning_msg(f"csv file {p} not valid!")
             self.update_list_pres()
 
+    @Slot(int)
     def ckbox_adjneg_changed(self, state: int):
         if state == Qt.CheckState.Checked:
             self.settings.ADJNEG = True
@@ -218,11 +222,13 @@ class mPSAT(QMainWindow, Ui_MainWindow):
             self.logger.warning(f"checkbox adjneg stat is 1")
         self.update_pre_plot()
 
+    @Slot(int)
     def slider_presmooth_changed(self, val: int):
         self.settings.SMOOTH = val
         self.label_pre_smooth.setText(f"{val}")
         self.update_pre_plot()
 
+    @Slot(int)
     def slider_prebaseline_changed(self, val: int):
         self.settings.BASELINE = val
         self.label_pre_baseline.setText(f"{val}")
@@ -283,6 +289,7 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         self.param_runtime[RT.CRT_IDX] = cur_row
         self.infer_one_spec(idx=cur_row)
 
+    @Slot(int)
     def ckbox_rm_co2(self, state: int):
         if state == Qt.CheckState.Checked:
             self.settings.CO2 = True
@@ -291,9 +298,11 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         else:
             self.logger.warning(f"checkbox co2 stat is 1")
 
+    @Slot(float)
     def dspbox_co2_changed(self, v: float):
         self.settings.CO2FAC = v
 
+    @Slot(int)
     def ckbox_rm_h2o(self, state: int):
         if state == Qt.CheckState.Checked:
             self.settings.H2O = True
@@ -302,9 +311,11 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         else:
             self.logger.warning(f"checkbox co2 stat is 1")
 
+    @Slot(int)
     def cmbox_analyze_changed(self, idx: int):
         self.settings.ANALYZE = idx
 
+    @Slot(int)
     def cmbox_method_changed(self, idx: int):
         self.settings.METHOD = idx
         if not self.__init_finished__:
@@ -339,7 +350,7 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         self.th.started.connect(self.worker.run)
         self.th.start()
 
-    @Slot()
+    @Slot(tuple)
     def load_model_finished(self, res: Tuple[int, MpInferenceBase]):
         self.logger.debug(f"load model result: {res}")
         self.inferer = res[1]
@@ -349,9 +360,10 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         self.settings.TOPN = self.spbox_spec_topn.value()
 
     def btn_match_clicked(self):
-        idx = self.listw_pre_files.currentRow()
+        idx = self.param_runtime[RT.CRT_IDX]
         self.infer_one_spec(idx=idx)
 
+    @Slot(QAbstractButton)
     def spec_set_browse_btn_clicked(self, btn: QAbstractButton):
         idx = self.btngrp_spec_set_browse.id(btn)
         filename = QFileDialog.getOpenFileName(
@@ -366,18 +378,23 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         if idx == BTN.CNN.value:
             self.settings.CNN = fpath
             self.ledit_spec_set_model_cnn.setText(fpath)
+            self.cmbox_method_changed(0)
         elif idx == BTN.RF.value:
             self.settings.RF = fpath
             self.ledit_spec_set_model_rf.setText(fpath)
+            self.cmbox_method_changed(1)
         elif idx == BTN.LSVM.value:
             self.settings.LSVM = fpath
             self.ledit_spec_set_model_lsvm.setText(fpath)
+            self.cmbox_method_changed(2)
         else:
             self.logger.warning(f"button idx {idx} not specified")
 
+    @Slot(int)
     def cbox_loglv_changed(self, idx: int):
         self.settings.LOGLV = idx
 
+    @Slot(int)
     def cbox_lang_changed(self, idx: int):
         lang = self.settings.idx_to_lang(idx)
         self.settings.LANG = "English" if lang == -1 else lang
@@ -437,6 +454,10 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         if isinstance(xy[0], bool) and not xy[0]:
             self.show_warning_msg(f"Get spectrum failed!")
             return
+        self.set_window_title_fname(self.param_runtime[RT.CRT_IDX])
+        self.btn_match_go.setDisabled(True)
+        self.btn_spec_match_prev.setDisabled(True)
+        self.btn_spec_match_next.setDisabled(True)
         analyze = self.settings.ANALYZE
         if analyze == 0:  # processed
             self.preprocess_one_spec(x=xy[0], y=xy[1])
@@ -445,8 +466,26 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         rmco2 = self.settings.CO2
         co2fac = self.settings.CO2FAC
         topn = self.settings.TOPN
-        im = self.inferer.read_plot_csv(spec=spec, rmco2=rmco2, fac=co2fac)
-        out = self.inferer([im], topk=topn)
+
+        self.match_thread = QThread(self)
+        self.match_worker = MatchWorker(
+            inferer=self.inferer,
+            spec=spec,
+            rmco2=rmco2,
+            co2fac=co2fac,
+            topn=topn,
+        )
+        self.match_worker.moveToThread(self.match_thread)
+        self.match_worker.finished.connect(self.on_match_finished)
+        self.match_worker.finished.connect(self.match_thread.quit)
+        self.match_worker.finished.connect(self.match_thread.deleteLater)
+        self.match_thread.started.connect(self.match_worker.run)
+        self.match_thread.start()
+        # im = self.inferer.read_plot_csv(spec=spec, rmco2=rmco2, fac=co2fac)
+        # out = self.inferer([im], topk=topn)
+        # self.on_match_finished(out=out)
+
+    def on_match_finished(self, out: List[List[Union[List[str], float]]]):
         self.logger.debug(out)
         self.table_match_res.setRowCount(0)
         for i, row in enumerate(out):
@@ -454,8 +493,10 @@ class mPSAT(QMainWindow, Ui_MainWindow):
             self.table_match_res.insertRow(i)
             self.table_match_res.setItem(i, 0, QTableWidgetItem(r))
             self.table_match_res.setItem(i, 1, QTableWidgetItem(f"{row[1]*100:.2f}"))
-        self.setWindowTitle(f"mPSAT - {self.param_runtime[RT.SELECTED_FILES][idx]}")
         self.update_match_plot()
+        self.btn_match_go.setEnabled(True)
+        self.btn_spec_match_prev.setEnabled(True)
+        self.btn_spec_match_next.setEnabled(True)
 
     def get_current_spec(self, cur_row: int = None):
         if cur_row is None:
@@ -528,8 +569,12 @@ class mPSAT(QMainWindow, Ui_MainWindow):
             self.fig_spec_pre.reset_plot()
         else:
             self.update_pre_plot()
+            self.set_window_title_fname(self.param_runtime[RT.CRT_IDX])
 
-    def check_max_spec_num(self, new_files):
+    def set_window_title_fname(self, idx: int):
+        self.setWindowTitle(f"mPSAT - {self.param_runtime[RT.SELECTED_FILES][idx]}")
+
+    def check_max_spec_num(self, new_files: List[str]):
         now = len(self.param_runtime[RT.SELECTED_FILES])
         max_ = self.param_runtime[RT.MAX_SPEC_NUM]
         if now + len(new_files) > max_:

@@ -493,7 +493,6 @@ class Ui_MainWindow(object):
         sizePolicy7.setHeightForWidth(self.listw_pre_files.sizePolicy().hasHeightForWidth())
         self.listw_pre_files.setSizePolicy(sizePolicy7)
         self.listw_pre_files.setMinimumSize(QSize(10, 50))
-        self.listw_pre_files.setSortingEnabled(True)
 
         self.verticalLayout.addWidget(self.listw_pre_files)
 

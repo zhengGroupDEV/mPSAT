@@ -5,6 +5,7 @@ LastEditTime: 2022-08-01 15:38:27
 """
 import json
 import os
+import sys
 from typing import Dict, Union
 
 
@@ -40,10 +41,18 @@ class MpsatSettings(object):
     }
 
     def __init__(self, path: str = None) -> None:
+        home_dir = os.path.expanduser("~")
+        if sys.platform == "win32":
+            self.settings_path = home_dir + "\\.config\\mPSAT\\settings.json"
+        elif sys.platform == "linux":
+            self.settings_path = home_dir + "/.config/mPSAT/settings.json"
+        else:
+            raise NotImplementedError(f"platform {sys.platform} not supported!")
         if path is not None:
             self.settings_path = path
         if not os.path.exists(self.settings_path):
-            os.mkdir(os.path.dirname(self.settings_path))
+            print(f"config file not exist, created at {self.settings_path}")
+            os.makedirs(os.path.dirname(self.settings_path), exist_ok=True)
             self.sync()
 
     def load(self, p: str = None):

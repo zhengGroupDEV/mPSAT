@@ -6,20 +6,23 @@ authors = ["rainyl <rainyliusy3@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.11"
-PySide6 = "^6.3.1"
-matplotlib = "^3.5.2"
-coloredlogs = "^15.0.1"
-pyqtgraph = "^0.12.4"
-scipy = "^1.9.0"
-onnxruntime = "^1.12.0"
-scikit-learn = "^1.1.1"
+PySide6 = ">=6.3.1"
+matplotlib = ">=3.5.2"
+coloredlogs = ">=15.0.1"
+pyqtgraph = ">=0.12.4"
+scipy = ">=1.9.0"
+onnxruntime = ">=1.12.0"
+scikit-learn = ">=1.1.1"
 
 [tool.poetry.dev-dependencies]
 # black = "^22.6.0"
-Nuitka = "^1.0"
-# cx-Freeze = "^6.11.1"
-orderedset = "^2.0.3"
+Nuitka = ">=1.0"
+orderedset = ">=2.0.3"
 # johnnydep = "^1.14"
+# pyinstaller = ">=5.3"
+# pipdeptree = ">=2.2.1"
+# pydump = ">=1.2.0"
+zstandard = "^0.18.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

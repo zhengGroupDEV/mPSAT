@@ -1,14 +1,16 @@
 '''
 Description: mPSAT main application entry
 Author: Rainyl
-LastEditTime: 2022-08-04 15:58:11
+LastEditTime: 2022-08-09 10:32:19
 '''
 import sys
+import faulthandler
 from PySide6.QtWidgets import QApplication
 
 from mPSAT.mpsatApp import mPSAT
 from mPSAT.splash import Splash
 
+faulthandler.enable()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -3,9 +3,10 @@ Description: workers
 Author: Rainyl
 LastEditTime: 2022-07-31 18:48:35
 """
+from typing import Tuple, Union
 import os
 import time
-from typing import Tuple, Union
+import numpy as np
 from PySide6.QtCore import QObject, Signal, Slot
 
 from mPSAT.utils.infer_base import MpInferenceBase
@@ -14,14 +15,23 @@ from mPSAT.utils.infer_skl import MpInferenceSKL
 
 
 class MatchWorker(QObject):
-    finished = Signal(object)
+    finished = Signal(list)
 
-    def __init__(self):
+    def __init__(self, inferer: MpInferenceBase, 
+    spec: np.ndarray, rmco2: bool, co2fac: float,
+    topn: int):
         super(MatchWorker, self).__init__()
+        self.inferer = inferer
+        self.spec = spec
+        self.rmco2 = rmco2
+        self.co2fac = co2fac
+        self.topn = topn
 
     @Slot()
     def run(self) -> None:
-        ...
+        im = self.inferer.read_plot_csv(spec=self.spec, rmco2=self.rmco2, fac=self.co2fac)
+        out = self.inferer([im], topk=self.topn)
+        self.finished.emit(out)
 
 
 class LoadModelWorker(QObject):

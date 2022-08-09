@@ -10,6 +10,7 @@ import numpy as np
 from typing import List, Union, Dict
 from matplotlib import pyplot as plt
 from PIL import Image
+from io import BytesIO
 
 
 class MpInferenceBase(object):
@@ -26,21 +27,34 @@ class MpInferenceBase(object):
         return np.exp(x) / np.sum(np.exp(x), axis=axis)
 
     def plot_spec(self, x, y, PX_H: int = 480, dpi: int = 120) -> Image.Image:
-        fig = plt.figure(num=1, figsize=(PX_H / dpi, PX_H / dpi), dpi=dpi)
         xx = np.round(self.xx, 2)
         yy = np.interp(xx, x, y, left=0, right=0)
 
-        ax = fig.add_subplot(111)
-        ax.plot(xx, yy, ls="-", lw=1, c="k")
-        ax.set_xlim(4000, 400)
-        ax.set_ylim(0, 1)
-        fig.tight_layout()
-        canvas = plt.get_current_fig_manager().canvas
-        canvas.draw()
-        im = Image.frombytes(
-            "RGB", canvas.get_width_height(), canvas.tostring_rgb()
-        ).convert("L")
-        plt.close(1)
+        ####################################################################
+        # this method will make the program crash with violation access
+        # may be a bug of freetype v1.11.0 used by matplotlib
+        # or the nuitka's
+        ####################################################################
+        # fig = plt.figure(num=1, figsize=(PX_H / dpi, PX_H / dpi), dpi=dpi)
+        # ax = fig.add_subplot(111)
+        # ax.plot(xx, yy, ls="-", lw=1, c="k")
+        # ax.set_xlim(4000, 400)
+        # ax.set_ylim(0, 1)
+        # fig.tight_layout()
+
+        plt.figure(figsize=(PX_H / dpi, PX_H / dpi), dpi=dpi)
+        plt.subplot(111)
+        plt.plot(xx, yy, ls="-", lw=1, c="k")
+        plt.xlim(4000, 400)
+        plt.ylim(0, 1)
+        plt.tight_layout()
+
+        bio = BytesIO()
+        plt.savefig(bio)
+        im = Image.open(bio)
+
+        plt.clf()
+        plt.close("all")
         return im
 
     def load_label_name(self, p: str):
