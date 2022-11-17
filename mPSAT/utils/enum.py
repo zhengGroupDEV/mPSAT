@@ -13,7 +13,7 @@ class RT(Enum):
     CRT_IDX = 5
     CNN_PATH = 6
     RF_PATH = 7
-    LSVM_PATH = 8
+    CNN2D_PATH = 8
 
 class PLOT(Enum):
     X = 0
@@ -32,4 +32,4 @@ class SPEC(Enum):
 class BTN(Enum):
     CNN = 1
     RF = 2
-    LSVM = 3
+    CNN2D = 3

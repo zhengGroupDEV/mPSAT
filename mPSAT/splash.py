@@ -61,7 +61,7 @@ class Splash(QMainWindow):
         elif method == 1:  # RF
             model_path = settings.RF
         elif method == 2:
-            model_path = settings.LSVM
+            model_path = settings.CNN2D
         else:
             self.ui.label_loading.setText(f"model method {method} not supported!")
             return

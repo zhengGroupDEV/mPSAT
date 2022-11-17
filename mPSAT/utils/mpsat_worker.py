@@ -10,16 +10,19 @@ import numpy as np
 from PySide6.QtCore import QObject, Signal, Slot
 
 from mPSAT.utils.infer_base import MpInferenceBase
-from mPSAT.utils.infer_nn import MpInferenceNNONNX
-from mPSAT.utils.infer_skl import MpInferenceSKL
+from mPSAT.utils.inferrer import MpInferenceOnnx
 
 
 class MatchWorker(QObject):
     finished = Signal(list)
 
-    def __init__(self, inferer: MpInferenceBase, 
-    spec: np.ndarray, rmco2: bool, co2fac: float,
-    topn: int):
+    def __init__(
+        self,
+        inferer: MpInferenceBase, 
+        spec: np.ndarray,
+        rmco2: bool, co2fac: float,
+        topn: int,
+    ):
         super(MatchWorker, self).__init__()
         self.inferer = inferer
         self.spec = spec
@@ -29,20 +32,20 @@ class MatchWorker(QObject):
 
     @Slot()
     def run(self) -> None:
-        im = self.inferer.read_plot_csv(spec=self.spec, rmco2=self.rmco2, fac=self.co2fac)
-        out = self.inferer([im], topk=self.topn)
+        out = self.inferer([self.spec], topk=self.topn)
         self.finished.emit(out)
 
 
 class LoadModelWorker(QObject):
     finished = Signal(tuple)
 
-    def __init__(self, label_name_str: str, method: int, model_path: str):
+    def __init__(self, label_name_str: str, method: int, model_path: str, device: str="cpu",):
         super(LoadModelWorker, self).__init__()
         self.label_name_str = label_name_str
         self.method = method
         self.model_path = model_path
         self.inferer: MpInferenceBase = None
+        self.device = device  # TODO: add device option to GUI
 
     def load_model(self) -> int:
         """
@@ -51,27 +54,25 @@ class LoadModelWorker(QObject):
             1 - model path not exist
             2 - method not supported
         """
-        if self.method == 0:  # CNN
-            if not os.path.exists(self.model_path):
-                print(f"model path {self.model_path} not exists!")
-                return 1
-            self.inferer = MpInferenceNNONNX(
-                model_path=self.model_path,
-                label_name=self.label_name_str,
-            )
-            return 0
-        elif self.method == 1 or self.method == 2:
-            if not os.path.exists(self.model_path):
-                print(f"model path {self.model_path} not exists!")
-                return 1
-            self.inferer = MpInferenceSKL(
-                model_path=self.model_path,
-                label_name=self.label_name_str,
-            )
-            return 0
+        if self.method == 0:
+            model_name = "cnn"
+        elif self.method == 1:
+            model_name = "rf"
+        elif self.method == 2:
+            model_name = "cnn2d"
         else:
-            print(f"method [{self.method}] not supported")
             return 2
+            # raise NotImplementedError(f"method {self.method} not implemented")
+        if not os.path.exists(self.model_path):
+            print(f"model path {self.model_path} not exists!")
+            return 1
+        self.inferer = MpInferenceOnnx(
+            model_path=self.model_path,
+            model_name=model_name,
+            label_name=self.label_name_str,
+            device=self.device,
+        )
+        return 0
 
     @Slot()
     def run(self):

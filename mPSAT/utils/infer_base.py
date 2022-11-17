@@ -2,60 +2,109 @@
 Description: inference base class
 Author: Rainyl
 Date: 2022-07-06 19:11:17
-LastEditTime: 2022-07-06 19:12:43
 """
 import json
+import os
 import warnings
 import numpy as np
+from numpy.typing import NDArray
 from typing import List, Union, Dict
-from matplotlib import pyplot as plt
-from PIL import Image
-from io import BytesIO
 
 
 class MpInferenceBase(object):
-    xx = np.arange(400, 4000, 0.1)
+    xx = np.arange(400, 4000, 1).astype(np.float32)
 
-    def __init__(self, model_path: str, label_name: str):
+    def __init__(
+        self, model_path: str, model_name: str, label_name: str, num_class: int = 200
+    ):
         self.model = self.load_model(model_path)
+        self.model_name = model_name
+        self.num_class = num_class
         self.label_name_hash = self.load_label_name(label_name)
 
-    def minmax(self, x: np.ndarray) -> np.ndarray:
+    def minmax(self, x: NDArray[np.float32]) -> NDArray[np.float32]:
         return (x - min(x)) / (max(x) - min(x))
 
-    def softmax(self, x: np.ndarray, axis=1) -> np.ndarray:
-        return np.exp(x) / np.sum(np.exp(x), axis=axis)
+    def normalize(self, x: NDArray[np.float32], mean=0.5, std=0.5):
+        return (x - mean) / std
 
-    def plot_spec(self, x, y, PX_H: int = 480, dpi: int = 120) -> Image.Image:
-        xx = np.round(self.xx, 2)
-        yy = np.interp(xx, x, y, left=0, right=0)
+    def softmax(self, x: NDArray[np.float32], axis=1) -> NDArray[np.float32]:
+        # x: (B, num_class)
+        return np.exp(x) / np.sum(np.exp(x), axis=axis, keepdims=True)
 
-        ####################################################################
-        # this method will make the program crash with violation access
-        # may be a bug of freetype v1.11.0 used by matplotlib
-        # or the nuitka's
-        ####################################################################
-        # fig = plt.figure(num=1, figsize=(PX_H / dpi, PX_H / dpi), dpi=dpi)
-        # ax = fig.add_subplot(111)
-        # ax.plot(xx, yy, ls="-", lw=1, c="k")
-        # ax.set_xlim(4000, 400)
-        # ax.set_ylim(0, 1)
-        # fig.tight_layout()
+    # def adj_negative(self, x):
+    #     if not isinstance(x, np.ndarray):
+    #         x = np.array(x)
+    #     # x[x < 0] = 0
+    #     # x = x + abs(x.min()) + 1 if x.min() < 1 else x
+    #     x = x + abs(x.min()) if x.min() < 0 else x
+    #     return x
 
-        plt.figure(figsize=(PX_H / dpi, PX_H / dpi), dpi=dpi)
-        plt.subplot(111)
-        plt.plot(xx, yy, ls="-", lw=1, c="k")
-        plt.xlim(4000, 400)
-        plt.ylim(0, 1)
-        plt.tight_layout()
+    # def iModPolyFit(self, x, y, n: int) -> NDArray[np.float32]:  # type: ignore
+    #     if not all([isinstance(x, np.ndarray), isinstance(y, np.ndarray)]):
+    #         x, y = np.array(x), np.array(y)
+    #     wavesOriginal = x
+    #     devPrev = 0
+    #     firstIter = True
+    #     criteria = False
+    #     while not criteria:
+    #         paramVector = np.polynomial.Polynomial.fit(x, y, n)
+    #         mod_poly = paramVector(x)
+    #         residuals = y - mod_poly
+    #         dev_curr = residuals.std(ddof=1)
 
-        bio = BytesIO()
-        plt.savefig(bio)
-        im = Image.open(bio)
+    #         if firstIter:
+    #             peaks = []
+    #             for i in range(y.shape[0]):
+    #                 if y[i] > mod_poly[i] + dev_curr:
+    #                     peaks.append(i)
+    #             peaks = np.array(peaks)
+    #             y = np.delete(y, peaks)
+    #             mod_poly = np.delete(mod_poly, peaks)
+    #             x = np.delete(x, peaks)
+    #             firstIter = False
+    #         for j in range(y.shape[0]):
+    #             if mod_poly[j] + dev_curr > y[j]:
+    #                 pass
+    #             else:
+    #                 y[j] = mod_poly[j]
+    #         criteria = abs((dev_curr - devPrev) / dev_curr) <= 0.05
 
-        plt.clf()
-        plt.close("all")
-        return im
+    #         if criteria:
+    #             t = np.interp(wavesOriginal, x, y)
+    #             return t.flatten()  # type: ignore
+    #         devPrev = dev_curr
+
+    # def specy_prep(
+    #     self, wavenum, absorb, smooth: int = 0, baseline: int = 0, adj_neg: bool = False
+    # ):
+    #     if adj_neg:
+    #         absorb = self.adj_negative(absorb)
+    #     if smooth == 0:
+    #         smoothed = absorb
+    #     else:
+    #         smoothed: NDArray[np.float32] = savgol_filter(
+    #             x=absorb,
+    #             window_length=11,
+    #             polyorder=smooth,
+    #         )  # type: ignore
+    #     if baseline != 0:
+    #         baselineRemove = smoothed - self.iModPolyFit(wavenum, smoothed, baseline)  # type: ignore
+    #     else:
+    #         baselineRemove = smoothed
+    #     baselineRemove = self.minmax(baselineRemove)
+    #     return baselineRemove
+
+    # def load_label_name(self, p: str):
+    #     label_name_hash: Dict[str, List[str]] = {
+    #         str(i): [str(i)] for i in range(self.num_class)
+    #     }
+    #     if not os.path.exists(p):
+    #         warnings.warn(f"label to name file {p} not exists!", ResourceWarning)
+    #         return label_name_hash
+    #     with open(p, "r") as f:
+    #         label_name_hash = json.load(f)
+    #     return label_name_hash
 
     def load_label_name(self, p: str):
         # label_name_hash: Union[None, Dict[str, List[str]]] = None
@@ -70,51 +119,70 @@ class MpInferenceBase(object):
             label_name_hash = {f"{i}": "i" for i in range(120)}
         return label_name_hash
 
-    def label2name(self, labels: List[List[int]]) -> List[List[Union[int, str]]]:
+    def label2name(self, labels: List[List[int]]) -> List[List[List[str]]]:
+        if self.label_name_hash is None:
+            return labels  # type: ignore
         if not all([all([c in self.label_name_hash for c in row]) for row in labels]):
             warnings.warn(f"some label not in label_name_hash table!", ResourceWarning)
         names = [[self.label_name_hash[str(c)] for c in row] for row in labels]
         return names
 
-    def read_plot_csv(
-        self,
-        spec: np.ndarray,
-        rmco2: bool = False,
-        fac: float = 0.2,
-    ) -> Image.Image:
-        if spec.shape[1] != 2:
-            raise ValueError(f"spec must have shape (N, 2)")
-        _d = spec.copy()
-        if rmco2:
-            _d = self.rm_co2(_d, fac=fac)
-        idx = np.argsort(_d.T[0])
-        x = _d.T[0][idx]
-        y = self.minmax(_d.T[1][idx])
-        im = self.plot_spec(x, y)
-        return im
-
-    def rm_co2(self, x: np.ndarray, fac: float = 0.2):
+    def rm_co2(self, y: NDArray[np.float32], x=None):
+        if x is not None:
+            assert isinstance(x, np.ndarray) and x.shape == y.shape
+            idx = np.argsort(x)
+            x_, y_ = x[idx], y[idx]
+            y = np.interp(self.xx, x_, y_, left=0, right=0)
         c1 = (self.xx >= 2280) & (self.xx <= 2400)
         c2 = (self.xx >= 3570) & (self.xx <= 3750)
-        idxs = c1 | c2
-        idx = np.argsort(x.T[0])
-        x_ = x.T[0][idx]
-        y_ = x.T[1][idx]
-        _bins, _height = np.histogram(y_, bins=50)
-        most = _height[np.argmax(_bins)]
-        yy = np.interp(self.xx, x_, y_, left=0, right=0)
-        yy[idxs] = yy[idxs] * fac
-        yy = (yy - most) / (yy.max() - yy.min())
-        yy[yy < 0] = 0
-        # yy = self.minmax(yy)
-        res = np.vstack((self.xx, yy)).T
-        return res
+        # idxs = (c1 | c2)
+        # replace with a line
+        min1 = min(y[c1])
+        min2 = min(y[c2])
+        y[c1] = min1
+        y[c2] = min2
+        # scale by fac
+        # idxs = (c1 | c2)
+        # y[idxs] = y[idxs] * fac
+        y[y < 0] = 0
+        return y
 
     def load_model(self, p: str):
-        ...
+        raise NotImplementedError()
 
-    def __call__(self, x: List[Image.Image]):
-        ...
+    def __call__(
+        self,
+        spec: List[NDArray[np.float32]],
+        topk: int,
+        return_score: bool,
+    ):
+        raise NotImplementedError()
 
-    def preprocess(self, x: Union[Image.Image, List[Image.Image]]):
-        ...
+    def preprocess(
+        self,
+        spec: List[NDArray[np.float32]],
+        openspecy: bool = False,
+        smooth: int = 3,
+        baseline: int = 8,
+    ):
+        new_spec = []
+        for s in spec:
+            assert len(s.shape) == 2, f"the shape of spec is {s.shape}"
+            if not isinstance(s, np.ndarray):
+                s = np.asarray(s, dtype=np.float32)
+            # sort
+            idx = np.argsort(s.T[0])
+            s = s[idx]
+            # drop
+            s1 = s[s.T[0] >= 500]
+            # interpolate
+            yy = np.interp(self.xx, s1.T[0], s1.T[1], left=0, right=0)
+            # openspecy
+            if openspecy:
+                yy = self.specy_prep(self.xx, yy, smooth=smooth, baseline=baseline)
+            # rmco2
+            yy = self.rm_co2(yy)
+            yy = self.minmax(yy)
+            new_spec.append(yy)
+        x = np.asarray(new_spec, dtype=np.float32)
+        return x

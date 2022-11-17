@@ -22,8 +22,7 @@ from mPSAT.utils.enum import RT, PLOT, BTN
 from mPSAT.mpsatUI import Ui_MainWindow
 from mPSAT.utils.logger import MPSATLogger
 from mPSAT.utils.infer_base import MpInferenceBase
-from mPSAT.utils.infer_nn import MpInferenceNNONNX
-from mPSAT.utils.infer_skl import MpInferenceSKL
+from mPSAT.utils.inferrer import MpInferenceOnnx
 from mPSAT.utils.msettings import MpsatSettings
 from mPSAT.widgets.busy_dialog import BusyDialog
 from mPSAT.utils.mpsat_worker import LoadModelWorker, MatchWorker
@@ -105,7 +104,7 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         self.btngrp_spec_set_browse = QButtonGroup(self)
         self.btngrp_spec_set_browse.addButton(self.btn_spec_set_cnn, id=BTN.CNN.value)
         self.btngrp_spec_set_browse.addButton(self.btn_spec_set_rf, id=BTN.RF.value)
-        self.btngrp_spec_set_browse.addButton(self.btn_spec_set_lsvm, id=BTN.LSVM.value)
+        self.btngrp_spec_set_browse.addButton(self.btn_spec_set_cnn2d, id=BTN.CNN2D.value)
         self.btngrp_spec_set_browse.buttonClicked.connect(
             self.spec_set_browse_btn_clicked
         )
@@ -135,7 +134,7 @@ class mPSAT(QMainWindow, Ui_MainWindow):
 
         self.ledit_spec_set_model_cnn.setText(self.settings.CNN)
         self.ledit_spec_set_model_rf.setText(self.settings.RF)
-        self.ledit_spec_set_model_lsvm.setText(self.settings.LSVM)
+        self.ledit_spec_set_model_cnn2d.setText(self.settings.CNN2D)
         self.spbox_spec_topn.setValue(self.settings.TOPN)
 
         self.cbox_loglv.setCurrentIndex(self.settings.LOGLV)
@@ -332,7 +331,7 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         elif method == 1:  # RF
             model_path = self.settings.RF
         elif method == 2:
-            model_path = self.settings.LSVM
+            model_path = self.settings.CNN2D
         else:
             self.logger.error(f"model method {method} not supported!")
             return
@@ -370,7 +369,7 @@ class mPSAT(QMainWindow, Ui_MainWindow):
             self,
             caption="Select Model",
             dir=".",
-            filter="ONNX (*.onnx);;Pickle (*.pkl)",
+            filter="ONNX (*.onnx)",
         )
         fpath = filename[0]
         if not fpath:
@@ -378,15 +377,15 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         if idx == BTN.CNN.value:
             self.settings.CNN = fpath
             self.ledit_spec_set_model_cnn.setText(fpath)
-            self.cmbox_method_changed(0)
+            # self.cmbox_method_changed(0)
         elif idx == BTN.RF.value:
             self.settings.RF = fpath
             self.ledit_spec_set_model_rf.setText(fpath)
-            self.cmbox_method_changed(1)
-        elif idx == BTN.LSVM.value:
-            self.settings.LSVM = fpath
-            self.ledit_spec_set_model_lsvm.setText(fpath)
-            self.cmbox_method_changed(2)
+            # self.cmbox_method_changed(1)
+        elif idx == BTN.CNN2D.value:
+            self.settings.CNN2D = fpath
+            self.ledit_spec_set_model_cnn2d.setText(fpath)
+            # self.cmbox_method_changed(2)
         else:
             self.logger.warning(f"button idx {idx} not specified")
 
@@ -414,21 +413,15 @@ class mPSAT(QMainWindow, Ui_MainWindow):
         label_name.open(QIODeviceBase.ReadOnly)
         label_name_str = label_name.readAll().toStdString()
         method = self.settings.METHOD
-        if method == 0:  # CNN
+        if method == 0:  # CNN1D
             model_path = self.settings.CNN
-            self.logger.debug(f"switching model to [{model_path}]")
-            if not os.path.exists(model_path):
-                self.logger.error(f"model path {model_path} not exists!")
-                return 1
-            self.inferer = MpInferenceNNONNX(
-                model_path=model_path,
-                label_name=label_name_str,
-            )
-            return 0
+            model_name = "cnn"
         elif method == 1:  # RF
             model_path = self.settings.RF
-        elif method == 2:  # LSVM
-            model_path = self.settings.LSVM
+            model_name = "rf"
+        elif method == 2:  # CNN2D
+            model_path = self.settings.CNN2D
+            model_name = "cnn2d"
         else:
             self.logger.error(f"method [{method}] not supported")
             self.show_warning_msg(f"method [{method}] not supported")
@@ -437,8 +430,9 @@ class mPSAT(QMainWindow, Ui_MainWindow):
             self.logger.error(f"model path {model_path} not exists!")
             return 1
         self.logger.debug(f"switching model to [{model_path}]")
-        self.inferer = MpInferenceSKL(
+        self.inferer = MpInferenceOnnx(
             model_path=model_path,
+            model_name=model_name,
             label_name=label_name_str,
         )
         return 0
@@ -531,8 +525,11 @@ class mPSAT(QMainWindow, Ui_MainWindow):
             name1 = "Processed"
             x = self.spectrum.x
             y = self.spectrum.y
-        xy = np.vstack((x, y)).T
-        x_co2, y_co2 = self.inferer.rm_co2(xy, self.settings.CO2FAC).T
+        # xy = np.vstack((x, y)).T
+        # x_co2, y_co2 = self.inferer.rm_co2(xy, self.settings.CO2FAC).T
+        y_co2 = self.inferer.rm_co2(y, x=x)
+        x_co2 = self.inferer.xx
+        # TODO: show the matched spectra rather than rmco2
         self.fig_spec_match.update_plot(
             x=x,
             y=y,

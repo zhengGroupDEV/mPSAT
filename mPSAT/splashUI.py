@@ -161,7 +161,7 @@ class Ui_Splash(object):
     def retranslateUi(self, Splash):
         Splash.setWindowTitle(QCoreApplication.translate("Splash", u"MainWindow", None))
         self.label_title.setText(QCoreApplication.translate("Splash", u"<html><head/><body><p>mPSAT</p></body></html>", None))
-        self.label_description.setText(QCoreApplication.translate("Splash", u"<html><head/><body><p>(micro)Plastic Spectroscopy Analyze Tool</p></body></html>", None))
+        self.label_description.setText(QCoreApplication.translate("Splash", u"<html><head/><body><p>(micro)Plastic Spectroscopy Analysis Tool</p></body></html>", None))
         self.progressBar.setFormat(QCoreApplication.translate("Splash", u"0", None))
         self.label_loading.setText(QCoreApplication.translate("Splash", u"<html><head/><body><p><span style=\" font-size:12pt;\">Loading...</span></p></body></html>", None))
         self.label_credits.setText(QCoreApplication.translate("Splash", u"<html><head/><body><p><span style=\" font-weight:700;\">By zhengGroup @ LZU</span></p></body></html>", None))

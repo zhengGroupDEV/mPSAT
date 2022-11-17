@@ -22,11 +22,11 @@ class MpsatSettings(object):
     CO2 = True
     CO2FAC = 0.2
     ANALYZE = 0  # 0: processed, 1: original
-    METHOD = 0  # 0: CNN, 1: RF, 2: LSVM
+    METHOD = 0  # 0: CNN, 1: RF, 2: CNN2D
 
     CNN = ""
+    CNN2D = ""
     RF = ""
-    LSVM = ""
     TOPN = 10
     LOGLV = 0
     LANG = "English"
@@ -88,7 +88,7 @@ class MpsatSettings(object):
             "METHOD": self.METHOD,
             "CNN": self.CNN,
             "RF": self.RF,
-            "LSVM": self.LSVM,
+            "CNN2D": self.CNN2D,
             "TOPN": self.TOPN,
             "LOGLV": self.LOGLV,
             "LANG": self.LANG,

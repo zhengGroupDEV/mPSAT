@@ -117,7 +117,9 @@ class Ui_MainWindow(object):
 "height: 90px;\n"
 "font-size: 14pt;\n"
 "}")
-        self.btn_hide_menu.setIcon(icon)
+        icon1 = QIcon()
+        icon1.addFile(u":/icon/icon/micons/mpsat-logo-nobg.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_hide_menu.setIcon(icon1)
         self.btn_hide_menu.setIconSize(QSize(20, 20))
 
         self.verticalLayout_2.addWidget(self.btn_hide_menu)
@@ -149,9 +151,9 @@ class Ui_MainWindow(object):
         font2.setBold(False)
         font2.setStyleStrategy(QFont.PreferDefault)
         self.btn_left_home.setFont(font2)
-        icon1 = QIcon()
-        icon1.addFile(u":/icon/icon/micons/icon_home.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_left_home.setIcon(icon1)
+        icon2 = QIcon()
+        icon2.addFile(u":/icon/icon/micons/icon_home.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_left_home.setIcon(icon2)
         self.btn_left_home.setIconSize(QSize(16, 16))
 
         self.verticalLayout_2.addWidget(self.btn_left_home)
@@ -159,18 +161,18 @@ class Ui_MainWindow(object):
         self.btn_left_preprocess = QPushButton(self.widget_left)
         self.btn_left_preprocess.setObjectName(u"btn_left_preprocess")
         self.btn_left_preprocess.setFont(font2)
-        icon2 = QIcon()
-        icon2.addFile(u":/icon/icon/micons/icon_chart.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_left_preprocess.setIcon(icon2)
+        icon3 = QIcon()
+        icon3.addFile(u":/icon/icon/micons/icon_chart.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_left_preprocess.setIcon(icon3)
 
         self.verticalLayout_2.addWidget(self.btn_left_preprocess)
 
         self.btn_left_match = QPushButton(self.widget_left)
         self.btn_left_match.setObjectName(u"btn_left_match")
         self.btn_left_match.setFont(font2)
-        icon3 = QIcon()
-        icon3.addFile(u":/icon/icon/micons/icon_process.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_left_match.setIcon(icon3)
+        icon4 = QIcon()
+        icon4.addFile(u":/icon/icon/micons/icon_process.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_left_match.setIcon(icon4)
 
         self.verticalLayout_2.addWidget(self.btn_left_match)
 
@@ -194,18 +196,18 @@ class Ui_MainWindow(object):
         self.btn_settings = QPushButton(self.widget_left)
         self.btn_settings.setObjectName(u"btn_settings")
         self.btn_settings.setFont(font2)
-        icon4 = QIcon()
-        icon4.addFile(u":/icon/icon/micons/icon_settings.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_settings.setIcon(icon4)
+        icon5 = QIcon()
+        icon5.addFile(u":/icon/icon/micons/icon_settings.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_settings.setIcon(icon5)
 
         self.verticalLayout_2.addWidget(self.btn_settings)
 
         self.btn_about = QPushButton(self.widget_left)
         self.btn_about.setObjectName(u"btn_about")
         self.btn_about.setFont(font2)
-        icon5 = QIcon()
-        icon5.addFile(u":/icon/icon/micons/icon_info.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_about.setIcon(icon5)
+        icon6 = QIcon()
+        icon6.addFile(u":/icon/icon/micons/icon_info.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_about.setIcon(icon6)
 
         self.verticalLayout_2.addWidget(self.btn_about)
 
@@ -372,9 +374,9 @@ class Ui_MainWindow(object):
         self.btn_pre_save.setObjectName(u"btn_pre_save")
         sizePolicy2.setHeightForWidth(self.btn_pre_save.sizePolicy().hasHeightForWidth())
         self.btn_pre_save.setSizePolicy(sizePolicy2)
-        icon6 = QIcon()
-        icon6.addFile(u":/icon/icon/micons/icon_save.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_pre_save.setIcon(icon6)
+        icon7 = QIcon()
+        icon7.addFile(u":/icon/icon/micons/icon_save.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_pre_save.setIcon(icon7)
 
         self.gridLayout_8.addWidget(self.btn_pre_save, 2, 2, 1, 1)
 
@@ -504,9 +506,9 @@ class Ui_MainWindow(object):
 
         self.btn_pop_pre_files = QPushButton(self.groupBox_3)
         self.btn_pop_pre_files.setObjectName(u"btn_pop_pre_files")
-        icon7 = QIcon()
-        icon7.addFile(u":/icon/icon/micons/icon_minus.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_pop_pre_files.setIcon(icon7)
+        icon8 = QIcon()
+        icon8.addFile(u":/icon/icon/micons/icon_minus.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_pop_pre_files.setIcon(icon8)
 
         self.horizontalLayout_6.addWidget(self.btn_pop_pre_files)
 
@@ -514,17 +516,17 @@ class Ui_MainWindow(object):
         self.btn_select_file_dir.setObjectName(u"btn_select_file_dir")
         sizePolicy6.setHeightForWidth(self.btn_select_file_dir.sizePolicy().hasHeightForWidth())
         self.btn_select_file_dir.setSizePolicy(sizePolicy6)
-        icon8 = QIcon()
-        icon8.addFile(u":/icon/icon/micons/icon_add.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_select_file_dir.setIcon(icon8)
+        icon9 = QIcon()
+        icon9.addFile(u":/icon/icon/micons/icon_add.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_select_file_dir.setIcon(icon9)
 
         self.horizontalLayout_6.addWidget(self.btn_select_file_dir)
 
         self.btn_clear_pre_files = QPushButton(self.groupBox_3)
         self.btn_clear_pre_files.setObjectName(u"btn_clear_pre_files")
-        icon9 = QIcon()
-        icon9.addFile(u":/icon/icon/micons/icon_clear.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_clear_pre_files.setIcon(icon9)
+        icon10 = QIcon()
+        icon10.addFile(u":/icon/icon/micons/icon_clear.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_clear_pre_files.setIcon(icon10)
 
         self.horizontalLayout_6.addWidget(self.btn_clear_pre_files)
 
@@ -561,9 +563,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.btn_spec_match_prev = QPushButton(self.tab_match)
         self.btn_spec_match_prev.setObjectName(u"btn_spec_match_prev")
-        icon10 = QIcon()
-        icon10.addFile(u":/icon/icon/micons/icon_arrow_left.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_spec_match_prev.setIcon(icon10)
+        icon11 = QIcon()
+        icon11.addFile(u":/icon/icon/micons/icon_arrow_left.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_spec_match_prev.setIcon(icon11)
 
         self.horizontalLayout_8.addWidget(self.btn_spec_match_prev)
 
@@ -651,9 +653,9 @@ class Ui_MainWindow(object):
 
         self.btn_match_go = QPushButton(self.tab_match)
         self.btn_match_go.setObjectName(u"btn_match_go")
-        icon11 = QIcon()
-        icon11.addFile(u":/icon/icon/micons/icon_send.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_match_go.setIcon(icon11)
+        icon12 = QIcon()
+        icon12.addFile(u":/icon/icon/micons/icon_send.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_match_go.setIcon(icon12)
 
         self.horizontalLayout_8.addWidget(self.btn_match_go)
 
@@ -663,9 +665,9 @@ class Ui_MainWindow(object):
 
         self.btn_spec_match_next = QPushButton(self.tab_match)
         self.btn_spec_match_next.setObjectName(u"btn_spec_match_next")
-        icon12 = QIcon()
-        icon12.addFile(u":/icon/icon/micons/icon_arrow_right.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_spec_match_next.setIcon(icon12)
+        icon13 = QIcon()
+        icon13.addFile(u":/icon/icon/micons/icon_arrow_right.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_spec_match_next.setIcon(icon13)
 
         self.horizontalLayout_8.addWidget(self.btn_spec_match_next)
 
@@ -767,12 +769,13 @@ class Ui_MainWindow(object):
         self.gridLayout_15.setObjectName(u"gridLayout_15")
         self.label_2 = QLabel(self.groupBox_6)
         self.label_2.setObjectName(u"label_2")
-        self.label_2.setAlignment(Qt.AlignCenter)
+        self.label_2.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.gridLayout_15.addWidget(self.label_2, 1, 0, 1, 1)
 
         self.label_12 = QLabel(self.groupBox_6)
         self.label_12.setObjectName(u"label_12")
+        self.label_12.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.gridLayout_15.addWidget(self.label_12, 6, 0, 1, 1)
 
@@ -784,6 +787,7 @@ class Ui_MainWindow(object):
 
         self.label_33 = QLabel(self.groupBox_6)
         self.label_33.setObjectName(u"label_33")
+        self.label_33.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.gridLayout_15.addWidget(self.label_33, 5, 0, 1, 1)
 
@@ -799,27 +803,27 @@ class Ui_MainWindow(object):
 
         self.label_30 = QLabel(self.groupBox_6)
         self.label_30.setObjectName(u"label_30")
-        self.label_30.setAlignment(Qt.AlignCenter)
+        self.label_30.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.gridLayout_15.addWidget(self.label_30, 0, 0, 1, 1)
 
         self.btn_spec_set_cnn = QPushButton(self.groupBox_6)
         self.btn_spec_set_cnn.setObjectName(u"btn_spec_set_cnn")
-        icon13 = QIcon()
-        icon13.addFile(u":/icon/icon/micons/icon_open_folder.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_spec_set_cnn.setIcon(icon13)
+        icon14 = QIcon()
+        icon14.addFile(u":/icon/icon/micons/icon_open_folder.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_spec_set_cnn.setIcon(icon14)
 
         self.gridLayout_15.addWidget(self.btn_spec_set_cnn, 0, 2, 1, 1)
 
-        self.ledit_spec_set_model_lsvm = QLineEdit(self.groupBox_6)
-        self.ledit_spec_set_model_lsvm.setObjectName(u"ledit_spec_set_model_lsvm")
-        self.ledit_spec_set_model_lsvm.setReadOnly(True)
+        self.ledit_spec_set_model_cnn2d = QLineEdit(self.groupBox_6)
+        self.ledit_spec_set_model_cnn2d.setObjectName(u"ledit_spec_set_model_cnn2d")
+        self.ledit_spec_set_model_cnn2d.setReadOnly(True)
 
-        self.gridLayout_15.addWidget(self.ledit_spec_set_model_lsvm, 3, 1, 1, 1)
+        self.gridLayout_15.addWidget(self.ledit_spec_set_model_cnn2d, 3, 1, 1, 1)
 
         self.label_31 = QLabel(self.groupBox_6)
         self.label_31.setObjectName(u"label_31")
-        self.label_31.setAlignment(Qt.AlignCenter)
+        self.label_31.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.gridLayout_15.addWidget(self.label_31, 3, 0, 1, 1)
 
@@ -831,11 +835,11 @@ class Ui_MainWindow(object):
 
         self.gridLayout_15.addWidget(self.spbox_spec_topn, 4, 1, 1, 1)
 
-        self.btn_spec_set_lsvm = QPushButton(self.groupBox_6)
-        self.btn_spec_set_lsvm.setObjectName(u"btn_spec_set_lsvm")
-        self.btn_spec_set_lsvm.setIcon(icon13)
+        self.btn_spec_set_cnn2d = QPushButton(self.groupBox_6)
+        self.btn_spec_set_cnn2d.setObjectName(u"btn_spec_set_cnn2d")
+        self.btn_spec_set_cnn2d.setIcon(icon14)
 
-        self.gridLayout_15.addWidget(self.btn_spec_set_lsvm, 3, 2, 1, 1)
+        self.gridLayout_15.addWidget(self.btn_spec_set_cnn2d, 3, 2, 1, 1)
 
         self.cbox_lang = QComboBox(self.groupBox_6)
         self.cbox_lang.addItem(u"English")
@@ -846,13 +850,13 @@ class Ui_MainWindow(object):
 
         self.label_5 = QLabel(self.groupBox_6)
         self.label_5.setObjectName(u"label_5")
-        self.label_5.setAlignment(Qt.AlignCenter)
+        self.label_5.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.gridLayout_15.addWidget(self.label_5, 4, 0, 1, 1)
 
         self.btn_spec_set_rf = QPushButton(self.groupBox_6)
         self.btn_spec_set_rf.setObjectName(u"btn_spec_set_rf")
-        self.btn_spec_set_rf.setIcon(icon13)
+        self.btn_spec_set_rf.setIcon(icon14)
 
         self.gridLayout_15.addWidget(self.btn_spec_set_rf, 1, 2, 1, 1)
 
@@ -870,18 +874,18 @@ class Ui_MainWindow(object):
         self.btn_loglv = QPushButton(self.groupBox_6)
         self.btn_loglv.setObjectName(u"btn_loglv")
         self.btn_loglv.setEnabled(True)
-        icon14 = QIcon()
-        icon14.addFile(u":/icon/icon/micons/icon_debug.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_loglv.setIcon(icon14)
+        icon15 = QIcon()
+        icon15.addFile(u":/icon/icon/micons/icon_debug.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_loglv.setIcon(icon15)
 
         self.gridLayout_15.addWidget(self.btn_loglv, 5, 2, 1, 1)
 
         self.btn_language = QPushButton(self.groupBox_6)
         self.btn_language.setObjectName(u"btn_language")
         self.btn_language.setEnabled(True)
-        icon15 = QIcon()
-        icon15.addFile(u":/icon/icon/micons/icon_language.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_language.setIcon(icon15)
+        icon16 = QIcon()
+        icon16.addFile(u":/icon/icon/micons/icon_language.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_language.setIcon(icon16)
 
         self.gridLayout_15.addWidget(self.btn_language, 6, 2, 1, 1)
 
@@ -928,9 +932,9 @@ class Ui_MainWindow(object):
         font6.setFamilies([u"Segoe UI"])
         font6.setPointSize(9)
         self.commandLinkButton_2.setFont(font6)
-        icon16 = QIcon()
-        icon16.addFile(u":/icon/icon/micons/numpy_logo_icon_168073.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.commandLinkButton_2.setIcon(icon16)
+        icon17 = QIcon()
+        icon17.addFile(u":/icon/icon/micons/numpy_logo_icon_168073.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.commandLinkButton_2.setIcon(icon17)
 
         self.gridLayout_13.addWidget(self.commandLinkButton_2, 1, 0, 1, 1)
 
@@ -952,36 +956,36 @@ class Ui_MainWindow(object):
         self.commandLinkButton_3 = QCommandLinkButton(self.groupBox_4)
         self.commandLinkButton_3.setObjectName(u"commandLinkButton_3")
         self.commandLinkButton_3.setFont(font6)
-        icon17 = QIcon()
-        icon17.addFile(u":/icon/icon/micons/icon_chart1.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.commandLinkButton_3.setIcon(icon17)
+        icon18 = QIcon()
+        icon18.addFile(u":/icon/icon/micons/icon_chart1.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.commandLinkButton_3.setIcon(icon18)
 
         self.gridLayout_13.addWidget(self.commandLinkButton_3, 2, 0, 1, 1)
 
         self.commandLinkButton_6 = QCommandLinkButton(self.groupBox_4)
         self.commandLinkButton_6.setObjectName(u"commandLinkButton_6")
         self.commandLinkButton_6.setFont(font6)
-        icon18 = QIcon()
-        icon18.addFile(u":/icon/icon/micons/matplotlib_logo.webp", QSize(), QIcon.Normal, QIcon.Off)
-        self.commandLinkButton_6.setIcon(icon18)
+        icon19 = QIcon()
+        icon19.addFile(u":/icon/icon/micons/matplotlib_logo.webp", QSize(), QIcon.Normal, QIcon.Off)
+        self.commandLinkButton_6.setIcon(icon19)
 
         self.gridLayout_13.addWidget(self.commandLinkButton_6, 5, 0, 1, 1)
 
         self.commandLinkButton_4 = QCommandLinkButton(self.groupBox_4)
         self.commandLinkButton_4.setObjectName(u"commandLinkButton_4")
         self.commandLinkButton_4.setFont(font6)
-        icon19 = QIcon()
-        icon19.addFile(u":/icon/icon/micons/scipy.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.commandLinkButton_4.setIcon(icon19)
+        icon20 = QIcon()
+        icon20.addFile(u":/icon/icon/micons/scipy.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.commandLinkButton_4.setIcon(icon20)
 
         self.gridLayout_13.addWidget(self.commandLinkButton_4, 3, 0, 1, 1)
 
         self.commandLinkButton = QCommandLinkButton(self.groupBox_4)
         self.commandLinkButton.setObjectName(u"commandLinkButton")
         self.commandLinkButton.setFont(font6)
-        icon20 = QIcon()
-        icon20.addFile(u":/icon/icon/micons/Py-128.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.commandLinkButton.setIcon(icon20)
+        icon21 = QIcon()
+        icon21.addFile(u":/icon/icon/micons/Py-128.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.commandLinkButton.setIcon(icon21)
 
         self.gridLayout_13.addWidget(self.commandLinkButton, 0, 0, 1, 1)
 
@@ -1009,9 +1013,9 @@ class Ui_MainWindow(object):
         self.commandLinkButton_5 = QCommandLinkButton(self.groupBox_4)
         self.commandLinkButton_5.setObjectName(u"commandLinkButton_5")
         self.commandLinkButton_5.setFont(font6)
-        icon21 = QIcon()
-        icon21.addFile(u":/icon/icon/micons/Scikit_learn_logo_small.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.commandLinkButton_5.setIcon(icon21)
+        icon22 = QIcon()
+        icon22.addFile(u":/icon/icon/micons/Scikit_learn_logo_small.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.commandLinkButton_5.setIcon(icon22)
 
         self.gridLayout_13.addWidget(self.commandLinkButton_5, 4, 0, 1, 1)
 
@@ -1025,9 +1029,9 @@ class Ui_MainWindow(object):
         self.commandLinkButton_7 = QCommandLinkButton(self.groupBox_4)
         self.commandLinkButton_7.setObjectName(u"commandLinkButton_7")
         self.commandLinkButton_7.setFont(font6)
-        icon22 = QIcon()
-        icon22.addFile(u":/icon/icon/micons/ONNX-Runtime-logo.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.commandLinkButton_7.setIcon(icon22)
+        icon23 = QIcon()
+        icon23.addFile(u":/icon/icon/micons/ONNX-Runtime-logo.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.commandLinkButton_7.setIcon(icon23)
 
         self.gridLayout_13.addWidget(self.commandLinkButton_7, 6, 0, 1, 1)
 
@@ -1041,9 +1045,9 @@ class Ui_MainWindow(object):
         self.commandLinkButton_8 = QCommandLinkButton(self.groupBox_4)
         self.commandLinkButton_8.setObjectName(u"commandLinkButton_8")
         self.commandLinkButton_8.setFont(font6)
-        icon23 = QIcon()
-        icon23.addFile(u":/icon/icon/micons/qt-material.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.commandLinkButton_8.setIcon(icon23)
+        icon24 = QIcon()
+        icon24.addFile(u":/icon/icon/micons/qt-material.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.commandLinkButton_8.setIcon(icon24)
 
         self.gridLayout_13.addWidget(self.commandLinkButton_8, 7, 0, 1, 1)
 
@@ -1096,9 +1100,9 @@ class Ui_MainWindow(object):
 "hr { height: 1px; border-width: 0; }\n"
 "</style></head><body style=\" font-family:'MiSans Demibold'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Microsoft YaHei UI'; font-size:18pt;\">mPSAT</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Microsoft YaHei UI'; font-size:14pt;\">(micro)Plastic Spectroscopy Analyze Tool</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; te"
-                        "xt-indent:0px; font-family:'Microsoft YaHei UI'; font-size:14pt;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Microsoft YaHei UI'; font-size:14pt;\">(micro)Plastic Spectroscopy Analysis Tool</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; t"
+                        "ext-indent:0px; font-family:'Microsoft YaHei UI'; font-size:14pt;\"><br /></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Microsoft YaHei UI'; font-size:11pt;\">Developer: zhengGroup@LZU</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Microsoft YaHei UI'; font-size:11pt;\">Github: </span><a href=\"https://github.com/zhengGroupDEV\"><span style=\" font-family:'Microsoft YaHei UI'; font-size:11pt; text-decoration: underline; color:#0000ff;\">https://github.com/zhengGroupDEV</span></a></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Microsoft YaHei UI'; font-size:11pt; text-decoration: underline; color:#0000ff;\"><br /></p></body></html>", None))
@@ -1135,9 +1139,9 @@ class Ui_MainWindow(object):
         self.cbox_match_analyze.setItemText(1, QCoreApplication.translate("MainWindow", u"Original", None))
 
         self.label_26.setText(QCoreApplication.translate("MainWindow", u"Method:", None))
-        self.cbox_match_method.setItemText(0, QCoreApplication.translate("MainWindow", u"CNN", None))
+        self.cbox_match_method.setItemText(0, QCoreApplication.translate("MainWindow", u"CNN1D", None))
         self.cbox_match_method.setItemText(1, QCoreApplication.translate("MainWindow", u"RF", None))
-        self.cbox_match_method.setItemText(2, QCoreApplication.translate("MainWindow", u"LSVM", None))
+        self.cbox_match_method.setItemText(2, QCoreApplication.translate("MainWindow", u"CNN2D", None))
 
         self.btn_match_go.setText(QCoreApplication.translate("MainWindow", u"Match", None))
         self.btn_spec_match_next.setText("")
@@ -1149,7 +1153,7 @@ class Ui_MainWindow(object):
         self.groupBox_6.setTitle(QCoreApplication.translate("MainWindow", u"Model Path", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"RF Path:", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Language:", None))
-        self.ledit_spec_set_model_cnn.setPlaceholderText(QCoreApplication.translate("MainWindow", u"CNN model path", None))
+        self.ledit_spec_set_model_cnn.setPlaceholderText(QCoreApplication.translate("MainWindow", u"CNN1D model path", None))
         self.label_33.setText(QCoreApplication.translate("MainWindow", u"Log Level:", None))
         self.cbox_loglv.setItemText(0, QCoreApplication.translate("MainWindow", u"DEBUG", None))
         self.cbox_loglv.setItemText(1, QCoreApplication.translate("MainWindow", u"INFO", None))
@@ -1159,9 +1163,9 @@ class Ui_MainWindow(object):
 
         self.label_30.setText(QCoreApplication.translate("MainWindow", u"CNN Path:", None))
         self.btn_spec_set_cnn.setText("")
-        self.ledit_spec_set_model_lsvm.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Linear SVM path", None))
-        self.label_31.setText(QCoreApplication.translate("MainWindow", u"LSVM Path:", None))
-        self.btn_spec_set_lsvm.setText("")
+        self.ledit_spec_set_model_cnn2d.setPlaceholderText(QCoreApplication.translate("MainWindow", u"CNN2D model path", None))
+        self.label_31.setText(QCoreApplication.translate("MainWindow", u"CNN2D Path:", None))
+        self.btn_spec_set_cnn2d.setText("")
 
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Top-n:", None))
         self.btn_spec_set_rf.setText("")
