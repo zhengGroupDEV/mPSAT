@@ -33,6 +33,7 @@ If you meet any problems, you can open an issue and we will try to fix it.
 ## TODO
 
 - [ ] Add reference spectra to compare the result of identification
+- [ ] Add screenshot to identify polymer with no raw data
 
 ## Developer
 
