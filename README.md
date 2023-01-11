@@ -30,6 +30,10 @@ If you meet any problems, you can open an issue and we will try to fix it.
 1. Check the `build.py` to find how to build from source.
 2. Refer to [Nuitka](https://github.com/Nuitka/Nuitka) to customize the build options.
 
+## TODO
+
+- [ ] Add reference spectra to compare the result of identification
+
 ## Developer
 
 Developer: zhengGroup@LZU
